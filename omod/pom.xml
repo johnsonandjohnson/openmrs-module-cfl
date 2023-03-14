@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.openmrs.module</groupId>
         <artifactId>cfl</artifactId>
-        <version>1.4.0-dengue</version>
+        <version>1.4.1-SNAPSHOT-dengue</version>
     </parent>
 
     <artifactId>cfl-omod</artifactId>
