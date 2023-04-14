@@ -60,6 +60,9 @@
         <require_module version="${cflCoreVersion}">
             org.openmrs.module.cflcore
         </require_module>
+        <require_module version="${multiProjectVersion}">
+            org.openmrs.module.multiproject
+        </require_module>
     </require_modules>
 
     <aware_of_modules>

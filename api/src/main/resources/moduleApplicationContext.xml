@@ -22,12 +22,16 @@
           class="org.openmrs.module.cfl.api.activator.impl.CreateGlobalParametersActivatorStep"/>
     <bean id="cfl-FixRiskFactorForHIVConceptsActivatorStep"
           class="org.openmrs.module.cfl.api.activator.impl.FixRiskFactorForHIVConceptsActivatorStep"/>
+    <bean id="cfl-MigrateMetadataActivatorStep"
+          class="org.openmrs.module.cfl.api.activator.impl.MigrateMetadataActivatorStep"/>
     <bean id="cfl-InstallMetadataPackagesActivatorStep"
           class="org.openmrs.module.cfl.api.activator.impl.InstallMetadataPackagesActivatorStep"/>
     <bean id="cfl-ConfigurePatientDashboardAppsActivatorStep"
           class="org.openmrs.module.cfl.api.activator.impl.ConfigurePatientDashboardAppsActivatorStep"/>
     <bean id="cfl-InstallMetadataBundleActivatorStep"
           class="org.openmrs.module.cfl.api.activator.impl.InstallMetadataBundleActivatorStep"/>
+    <bean id="cfk-InstallMultiProjectAdviceActivatorStep"
+          class="org.openmrs.module.cfl.api.activator.impl.InstallMultiProjectAdviceActivatorStep"/>
     <!-- END ModuleActivatorStep -->
 
     <bean id="cflRolePrivilegeProfiles"

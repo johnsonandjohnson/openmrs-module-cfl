@@ -62,8 +62,9 @@
         <appframeworkVersion>2.15.0</appframeworkVersion>
         <locationbasedaccessVersion>0.2.0</locationbasedaccessVersion>
         <!-- CfL modules -->
-        <cflCoreVersion>1.9.1</cflCoreVersion>
+        <cflCoreVersion>1.11.2-SNAPSHOT</cflCoreVersion>
         <messagesVersion>1.5.7</messagesVersion>
+        <multiProjectVersion>1.0.0-SNAPSHOT</multiProjectVersion>
     </properties>
 
     <dependencyManagement>
@@ -300,6 +301,12 @@
             </dependency>
             <dependency>
                 <groupId>org.openmrs.module</groupId>
+                <artifactId>webservices.rest-omod-1.9</artifactId>
+                <version>${webservices.restVersion}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.openmrs.module</groupId>
                 <artifactId>uicommons-scss</artifactId>
                 <version>${uicommonsVersion}</version>
                 <scope>provided</scope>
@@ -321,6 +328,18 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guavaVersion}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.openmrs.module</groupId>
+                <artifactId>multiproject-api</artifactId>
+                <version>${multiProjectVersion}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.openmrs.module</groupId>
+                <artifactId>multiproject-omod</artifactId>
+                <version>${multiProjectVersion}</version>
                 <scope>provided</scope>
             </dependency>
         </dependencies>

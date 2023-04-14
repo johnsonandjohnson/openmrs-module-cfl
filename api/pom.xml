@@ -142,5 +142,9 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>multiproject-api</artifactId>
+        </dependency>
     </dependencies>
 </project>

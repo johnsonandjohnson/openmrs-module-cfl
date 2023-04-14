@@ -13,7 +13,7 @@
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>07_Location_Attribute_Types</filenameBase>
             <groupUuid>4b1a440d-d7c3-46ff-a5ba-1da4dd49a8f7</groupUuid>
-            <version>2</version>
+            <version>3</version>
             <importMode>MIRROR</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
