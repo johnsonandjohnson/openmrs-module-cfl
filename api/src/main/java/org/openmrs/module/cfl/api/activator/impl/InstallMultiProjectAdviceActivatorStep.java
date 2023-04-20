@@ -18,7 +18,9 @@ import org.openmrs.module.appframework.context.AppContextModel;
 import org.openmrs.module.appframework.domain.Extension;
 import org.openmrs.module.appframework.service.AppFrameworkService;
 import org.openmrs.module.cfl.api.activator.ModuleActivatorStep;
+import org.openmrs.module.cflcore.api.dto.FlagDTO;
 import org.openmrs.module.cflcore.api.program.PatientProgramDetails;
+import org.openmrs.module.cflcore.api.service.FlagDTOService;
 import org.openmrs.module.cflcore.api.service.PatientProgramDetailsService;
 import org.openmrs.module.multiproject.aop.ProjectBasedFilterAfterAdvice;
 import org.openmrs.module.multiproject.api.service.NameAndProjectSlugSuffixGetter;
@@ -59,5 +61,10 @@ public class InstallMultiProjectAdviceActivatorStep implements ModuleActivatorSt
         new ProjectBasedFilterAfterAdvice<>(
             new ProjectAssignmentProjectBasedFilter<>(Flag.class, Flag::getUuid),
             FlagService.class.getMethod("generateFlagsForPatient", Patient.class)));
+
+    Context.addAdvice(FlagDTOService.class, new ProjectBasedFilterAfterAdvice<>(
+        new ProjectAssignmentProjectBasedFilter<>(Flag.class, FlagDTO::getUuid),
+        FlagDTOService.class.getMethod("getAllEnabledFlags")
+    ));
   }
 }
