@@ -22,6 +22,13 @@ import org.openmrs.module.cflcore.api.dto.FlagDTO;
 import org.openmrs.module.cflcore.api.program.PatientProgramDetails;
 import org.openmrs.module.cflcore.api.service.FlagDTOService;
 import org.openmrs.module.cflcore.api.service.PatientProgramDetailsService;
+import org.openmrs.module.messages.api.model.PatientTemplate;
+import org.openmrs.module.messages.api.model.Template;
+import org.openmrs.module.messages.api.service.DefaultPatientTemplateService;
+import org.openmrs.module.messages.api.service.PatientTemplateService;
+import org.openmrs.module.messages.api.service.TemplateService;
+import org.openmrs.module.messages.domain.PagingInfo;
+import org.openmrs.module.messages.domain.criteria.BaseCriteria;
 import org.openmrs.module.multiproject.aop.ProjectBasedFilterAfterAdvice;
 import org.openmrs.module.multiproject.api.service.NameAndProjectSlugSuffixGetter;
 import org.openmrs.module.multiproject.filter.NameSuffixProjectBasedFilter;
@@ -29,6 +36,8 @@ import org.openmrs.module.multiproject.filter.ProjectAssignmentProjectBasedFilte
 import org.openmrs.module.patientflags.Flag;
 import org.openmrs.module.patientflags.api.FlagService;
 import org.openmrs.ui.framework.fragment.FragmentConfiguration;
+
+import java.util.List;
 
 public class InstallMultiProjectAdviceActivatorStep implements ModuleActivatorStep {
   @Override
@@ -62,9 +71,39 @@ public class InstallMultiProjectAdviceActivatorStep implements ModuleActivatorSt
             new ProjectAssignmentProjectBasedFilter<>(Flag.class, Flag::getUuid),
             FlagService.class.getMethod("generateFlagsForPatient", Patient.class)));
 
-    Context.addAdvice(FlagDTOService.class, new ProjectBasedFilterAfterAdvice<>(
-        new ProjectAssignmentProjectBasedFilter<>(Flag.class, FlagDTO::getUuid),
-        FlagDTOService.class.getMethod("getAllEnabledFlags")
-    ));
+    Context.addAdvice(
+        FlagDTOService.class,
+        new ProjectBasedFilterAfterAdvice<>(
+            new ProjectAssignmentProjectBasedFilter<>(Flag.class, FlagDTO::getUuid),
+            FlagDTOService.class.getMethod("getAllEnabledFlags")));
+
+    Context.addAdvice(
+        PatientTemplateService.class,
+        new ProjectBasedFilterAfterAdvice<>(
+            new ProjectAssignmentProjectBasedFilter<>(
+                Template.class,
+                (PatientTemplate patientTemplate) -> patientTemplate.getTemplate().getUuid()),
+            PatientTemplateService.class.getMethod("findAllByCriteria", BaseCriteria.class),
+            PatientTemplateService.class.getMethod(
+                "findAllByCriteria", BaseCriteria.class, PagingInfo.class)));
+
+    Context.addAdvice(
+        TemplateService.class,
+        new ProjectBasedFilterAfterAdvice<>(
+            new ProjectAssignmentProjectBasedFilter<>(Template.class, Template::getUuid),
+            TemplateService.class.getMethod("findAllByCriteria", BaseCriteria.class),
+            TemplateService.class.getMethod(
+                "findAllByCriteria", BaseCriteria.class, PagingInfo.class)));
+
+    Context.addAdvice(
+        DefaultPatientTemplateService.class,
+        new ProjectBasedFilterAfterAdvice<>(
+            new ProjectAssignmentProjectBasedFilter<>(
+                Template.class,
+                (PatientTemplate patientTemplate) -> patientTemplate.getTemplate().getUuid()),
+            DefaultPatientTemplateService.class.getMethod(
+                "findLackingPatientTemplates", Patient.class),
+            DefaultPatientTemplateService.class.getMethod(
+                "findLackingPatientTemplates", Patient.class, List.class)));
   }
 }
