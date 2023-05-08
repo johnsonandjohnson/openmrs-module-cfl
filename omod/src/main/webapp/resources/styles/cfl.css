@@ -877,3 +877,9 @@ ul#formBreadcrumb li.doing ul li.focused {
         padding: 0 8rem 0;
     }
 }
+
+.homepage-heading {
+   font-size: 40px;
+   color: #333333;
+   padding-top: 1rem;
+ }
