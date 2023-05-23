@@ -38,7 +38,7 @@ public class CflSecurityHeadersFilter implements Filter {
    */
   private static final String CFL_CONTENT_SECURITY_POLICY =
       "default-src 'self' ws://localhost:* localhost:* 'unsafe-inline' 'unsafe-eval' https://*.gstatic.com; "
-          + "script-src 'self' localhost:* 'unsafe-inline' 'unsafe-eval' https://www.google.com/recaptcha/api.js https://www.gstatic.com; "
+          + "script-src 'self' localhost:* 'unsafe-inline' 'unsafe-eval' https://www.google.com/recaptcha/api.js https://www.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; "
           + "frame-src 'self' localhost:*  'unsafe-inline' 'unsafe-eval' https://www.google.com/; "
           + "font-src data: 'self' localhost:* https://*.gstatic.com; "
           + "img-src data: 'self' localhost:* https://*.github.io; "
