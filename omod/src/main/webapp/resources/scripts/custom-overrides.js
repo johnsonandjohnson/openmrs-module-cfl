@@ -20,12 +20,14 @@
        'allergies.manageAllergies.title',
        'allergies.manageAllergies.subtitle',
        'cfl.emptyDashboardWidget.label',
-       'coreapps.clinicianfacing.overallActions'
+       'coreapps.clinicianfacing.overallActions',
+       'adminui.myAccount'
      ], () => applyCustomChanges());
   });
 
   function applyCustomChanges() {
     addBreadCrumbOnHomePage();
+    translateMyAccountLabelInTopHeaderSection();
     addTitleOnHomeAndSystemAdministrationPages();
     replaceNoneLabelOnEmptyWidgets();
     redesignAllergyUI();
@@ -45,6 +47,10 @@
     if (breadcrumbs.is(':empty')) {
       jq('#breadcrumbs').append('<span>' + emr.message('cfl.home.title') + '</span>');
     }
+  }
+
+  function translateMyAccountLabelInTopHeaderSection() {
+    jq('#user-account-menu > li > a').text(emr.message('adminui.myAccount'));
   }
 
   function addTitleOnHomeAndSystemAdministrationPages() {
