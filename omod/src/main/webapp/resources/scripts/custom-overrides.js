@@ -36,7 +36,7 @@
     moveAllWidgetsToFirstColumn();
     replaceURLsOnPatientDashboard();
     addHamburgerForGeneralActionsOnSmallerScreens();
-    removeDatePickerPlaceholders();
+    removeDatePickerPlaceholdersFromHtmlForms();
     replaceURLsOnManageLocationsPage();
     overrideUserAccountLinks();
     redirectToCorrectFindPatientPage();
@@ -181,15 +181,19 @@
   }
 
   // HTML Forms bug: remove date picker placeholders - "(dd/mm/yyyy)" etc.
-  function removeDatePickerPlaceholders() {
+  function removeDatePickerPlaceholdersFromHtmlForms() {
     const htmlForm = document.getElementById('htmlform');
     if (!!htmlForm) {
-      if (htmlForm.nodeType === NODE_TYPE_TEXT) {
-        htmlForm.data = htmlForm.data.replace(DATE_PICKER_PLACEHOLDER_REGEX, '');
-      } else if (htmlForm.nodeType === NODE_TYPE_ELEMENT) {
-        for (var i = 0; i < htmlForm.childNodes.length; i++) {
-          removeDatePickerPlaceholders(htmlForm.childNodes[i]);
-        }
+      removeDatePickerPlaceholders(htmlForm);
+    }
+  }
+
+  function removeDatePickerPlaceholders(node) {
+    if (node.nodeType === NODE_TYPE_TEXT) {
+      node.data = node.data.replace(DATE_PICKER_PLACEHOLDER_REGEX, '');
+    } else if (node.nodeType === NODE_TYPE_ELEMENT) {
+      for (var i = 0; i < node.childNodes.length; i++) {
+        removeDatePickerPlaceholders(node.childNodes[i]);
       }
     }
   }
