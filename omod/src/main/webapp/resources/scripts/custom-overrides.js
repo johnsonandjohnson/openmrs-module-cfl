@@ -230,31 +230,40 @@
         addNewUserAccount.href = `${CFL_UI_BASE}index.html#/user-account`;
       }
 
-      if (editUserAccount.length) {
-        overrideEditUserAccountLinks(editUserAccount);
-        pagination &&
-          pagination.addEventListener('click', function () {
-            overrideEditUserAccountLinks(document.querySelectorAll('#list-accounts .icon-pencil.edit-action'));
-          });
-        accountFilterInput &&
-          accountFilterInput.addEventListener('input', function () {
-            overrideEditUserAccountLinks(document.querySelectorAll('#list-accounts .icon-pencil.edit-action'));
-          });
-      }
+      overrideEditUserAccountLinks(document.querySelectorAll('#list-accounts .icon-pencil.edit-action'));
+
+      watchElementMutations('#list-accounts', () => {
+        overrideEditUserAccountLinks(document.querySelectorAll('#list-accounts .icon-pencil.edit-action'));
+      }, document.getElementById('list-accounts_wrapper'));
     }
   }
 
-  function overrideEditUserAccountLinks(editUserAccoutLinks) {
+  function overrideEditUserAccountLinks (editUserAccoutLinks) {
     editUserAccoutLinks.forEach(editUserAccoutLink => {
       const currentLocationHref = editUserAccoutLink.getAttribute('onclick');
       const personIdPosition = currentLocationHref.indexOf('personId=');
-      const personId = currentLocationHref.slice(personIdPosition, currentLocationHref.length - 2);
 
-      editUserAccoutLink.setAttribute('onclick', `location.href='${CFL_UI_BASE}index.html#/user-account?${personId}'`);
+      if (personIdPosition !== -1) {
+        const personId = readDigits(currentLocationHref.slice(personIdPosition + 'personId='.length, currentLocationHref.length));
+        editUserAccoutLink.setAttribute('onclick', `location.href='${CFL_UI_BASE}index.html#/user-account?personId=${personId}'`);
+      }
     });
   }
 
-  //redirects the user to CfL find patient page instead of the default one
+  function readDigits(text) {
+    let result = '';
+    for (var i = 0; i < text.length; i++) {
+      let char = text.charAt(i);
+      if( char >= '0' && char <= '9' ) {
+        result += char;
+      } else {
+        break;
+      }
+    }
+    return result;
+  }
+
+//redirects the user to CfL find patient page instead of the default one
   function redirectToCorrectFindPatientPage() {
     const url = location.href;
     if (url.endsWith('app=coreapps.findPatient')) {
@@ -287,5 +296,27 @@
         childList: true,
         subtree: true
       });
+    });
+  }
+
+  /**
+   * Observes changes to DOM starting from {@code parentElement} and its children, then calls {@code callback} on all elements
+   * fitting {@code selector} once a change is detected.
+   *
+   * @param selector
+   * @param callback
+   * @param parentElement
+   */
+  function watchElementMutations(selector, callback, parentElement = document) {
+    new MutationObserver((mutationRecords, observer) => {
+      // Query for elements matching the specified selector
+      Array.from(parentElement.querySelectorAll(selector)).forEach(element => {
+        if (!!element.textContent) {
+      callback(element);
+    }
+    });
+    }).observe(parentElement === document ? document.documentElement : parentElement, {
+      childList: true,
+      subtree: true
     });
   }
