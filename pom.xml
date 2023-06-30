@@ -65,6 +65,7 @@
         <cflCoreVersion>1.11.2-SNAPSHOT</cflCoreVersion>
         <messagesVersion>1.5.7</messagesVersion>
         <multiProjectVersion>1.0.0-SNAPSHOT</multiProjectVersion>
+        <visitsVersion>1.5.1-SNAPSHOT</visitsVersion>
     </properties>
 
     <dependencyManagement>
@@ -212,6 +213,13 @@
                 <groupId>org.openmrs.module</groupId>
                 <artifactId>messages-api</artifactId>
                 <version>${messagesVersion}</version>
+                <type>jar</type>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.openmrs.module</groupId>
+                <artifactId>visits-api</artifactId>
+                <version>${visitsVersion}</version>
                 <type>jar</type>
                 <scope>provided</scope>
             </dependency>

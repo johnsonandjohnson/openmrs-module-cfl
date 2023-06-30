@@ -35,6 +35,8 @@ import org.openmrs.module.multiproject.filter.NameSuffixProjectBasedFilter;
 import org.openmrs.module.multiproject.filter.ProjectAssignmentProjectBasedFilter;
 import org.openmrs.module.patientflags.Flag;
 import org.openmrs.module.patientflags.api.FlagService;
+import org.openmrs.module.visits.api.entity.VisitTime;
+import org.openmrs.module.visits.api.service.VisitTimeService;
 import org.openmrs.ui.framework.fragment.FragmentConfiguration;
 
 import java.util.List;
@@ -105,5 +107,12 @@ public class InstallMultiProjectAdviceActivatorStep implements ModuleActivatorSt
                 "findLackingPatientTemplates", Patient.class),
             DefaultPatientTemplateService.class.getMethod(
                 "findLackingPatientTemplates", Patient.class, List.class)));
+
+    Context.addAdvice(
+        VisitTimeService.class,
+        new ProjectBasedFilterAfterAdvice<>(
+            new ProjectAssignmentProjectBasedFilter<>(VisitTime.class, VisitTime::getUuid),
+            VisitTimeService.class.getMethod("getAllVisitTimes", boolean.class)
+        ));
   }
 }

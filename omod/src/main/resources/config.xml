@@ -63,6 +63,9 @@
         <require_module version="${multiProjectVersion}">
             org.openmrs.module.multiproject
         </require_module>
+        <require_module version="${visitsVersion}">
+            org.openmrs.module.visits
+        </require_module>
     </require_modules>
 
     <aware_of_modules>
