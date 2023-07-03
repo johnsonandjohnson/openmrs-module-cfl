@@ -66,6 +66,9 @@
         <require_module version="${visitsVersion}">
             org.openmrs.module.visits
         </require_module>
+        <require_module version="${adminuiVersion}">
+            org.openmrs.module.adminui
+        </require_module>
     </require_modules>
 
     <aware_of_modules>
@@ -76,6 +79,11 @@
     <advice>
         <point>org.openmrs.api.LocationService</point>
         <class>org.openmrs.module.cfl.advice.DefaultLocationPropertiesAdvice</class>
+    </advice>
+
+    <advice>
+        <point>org.openmrs.module.adminui.account.AccountService</point>
+        <class>org.openmrs.module.cfl.advice.AccountServiceAdvice</class>
     </advice>
 
     <!-- Internationalization -->
