@@ -35,12 +35,15 @@ import org.openmrs.module.multiproject.filter.NameSuffixProjectBasedFilter;
 import org.openmrs.module.multiproject.filter.ProjectAssignmentProjectBasedFilter;
 import org.openmrs.module.patientflags.Flag;
 import org.openmrs.module.patientflags.api.FlagService;
+import org.openmrs.module.visits.api.entity.VisitStatus;
 import org.openmrs.module.visits.api.entity.VisitTime;
+import org.openmrs.module.visits.api.service.VisitStatusService;
 import org.openmrs.module.visits.api.service.VisitTimeService;
 import org.openmrs.ui.framework.fragment.FragmentConfiguration;
 
 import java.util.List;
 
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class InstallMultiProjectAdviceActivatorStep implements ModuleActivatorStep {
   @Override
   public int getOrder() {
@@ -113,6 +116,15 @@ public class InstallMultiProjectAdviceActivatorStep implements ModuleActivatorSt
         new ProjectBasedFilterAfterAdvice<>(
             new ProjectAssignmentProjectBasedFilter<>(VisitTime.class, VisitTime::getUuid),
             VisitTimeService.class.getMethod("getAllVisitTimes", boolean.class)
-        ));
+        )
+    );
+
+    Context.addAdvice(
+        VisitStatusService.class,
+        new ProjectBasedFilterAfterAdvice<>(
+            new ProjectAssignmentProjectBasedFilter<>(VisitStatus.class, VisitStatus::getUuid),
+            VisitStatusService.class.getMethod("getAllVisitStatuses", boolean.class)
+        )
+    );
   }
 }
