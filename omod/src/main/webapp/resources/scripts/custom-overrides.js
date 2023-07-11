@@ -34,8 +34,6 @@
     setHomeBreadCrumbOnPatientDashboard();
     removeOccasionalUndefinedBreadCrumbs();
     moveAllWidgetsToFirstColumn();
-    replaceURLsOnPatientDashboard();
-    addHamburgerForGeneralActionsOnSmallerScreens();
     removeDatePickerPlaceholdersFromHtmlForms();
     replaceURLsOnManageLocationsPage();
     overrideUserAccountLinks();
@@ -122,61 +120,6 @@
     if (firstInfoContainer.length) {
       const remainingContainersChildren = jq('.info-container .info-section');
       remainingContainersChildren.detach().appendTo(firstInfoContainer);
-    }
-  }
-
-  // replace the url of 'Patient profile', 'Caregiver profile' and 'Conditions'
-  function replaceURLsOnPatientDashboard() {
-    const searchParams = new URLSearchParams(window.location.search);
-    if (searchParams.has('patientId')) {
-      const givenName = document.querySelector('.PersonName-givenName')?.textContent;
-      const middleName = document.querySelector('.PersonName-middleName')?.textContent;
-      const familyName = document.querySelector('.PersonName-familyName')?.textContent;
-      const fullName = [givenName, middleName, familyName].join(' ').replace('  ', ' ');
-      const patientProfileAnchor = document.querySelector('a#cfl\\.patientProfile');
-      const deletePerson =
-        document.querySelector('#org\\.openmrs\\.module\\.coreapps\\.deletePatient') ||
-        document.querySelector('#cfl\\.personDashboard\\.deletePerson');
-      const uuidMatch = /'([^)]+)'/.exec(deletePerson?.href);
-      const patientId = (uuidMatch && uuidMatch[1]) || searchParams.get('patientId');
-      if (!!patientProfileAnchor) {
-        patientProfileAnchor.href = `${CFL_UI_BASE}index.html#/edit-patient/${patientId}?redirect=${window.location.href}&name=${fullName}`;
-      }
-      const caregiverProfileAnchor = document.querySelector('a#cfl\\.caregiverProfile');
-      if (!!caregiverProfileAnchor) {
-        caregiverProfileAnchor.href = `${CFL_UI_BASE}index.html#/edit-caregiver/${patientId}?redirect=${window.location.href}&name=${fullName}`;
-      }
-      const conditionsAnchor = document.querySelector('a#cfl\\.overallActions\\.conditions');
-      if (!!conditionsAnchor) {
-        conditionsAnchor.href = `${CFL_UI_BASE}index.html#/conditions/${patientId}`;
-      }
-      const conditionsIcon = document.querySelector('.info-section.conditions i.edit-action');
-      if (!!conditionsIcon) {
-        conditionsIcon.setAttribute('onclick', `location.href = '${CFL_UI_BASE}index.html#/conditions/${patientId}'`);
-      }
-    }
-  }
-
-  // Add hamburger menu for general actions (visible on smaller screens)
-  function addHamburgerForGeneralActionsOnSmallerScreens() {
-    const actionContainer = jq('.action-container');
-    if (actionContainer.length) {
-      const actions = actionContainer.find('.action-section ul li');
-      actionContainer.before(
-        [
-          '<div class="general-actions-toggle navbar-dark">',
-          '<button class="navbar-toggler btn btn-secondary" type="button" data-toggle="collapse" data-target="#generalActions" aria-controls="generalActions" aria-expanded="false" aria-label="Toggle general actions">',
-          '<span class="navbar-toggler-icon mr-1"></span><span>' + emr.message('coreapps.clinicianfacing.overallActions') + '</span>',
-          '</button>',
-          '<div class="collapse navbar-collapse" id="generalActions">',
-          actions
-            .toArray()
-            .map(action => '<div>' + action.innerHTML + '</div>')
-            .join('\n'),
-          '</div>',
-          '</div>'
-        ].join('\n')
-      );
     }
   }
 
