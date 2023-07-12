@@ -29,7 +29,6 @@
     addBreadCrumbOnHomePage();
     translateMyAccountLabelInTopHeaderSection();
     addTitleOnHomeAndSystemAdministrationPages();
-    replaceNoneLabelOnEmptyWidgets();
     redesignAllergyUI();
     setHomeBreadCrumbOnPatientDashboard();
     removeOccasionalUndefinedBreadCrumbs();
@@ -58,17 +57,6 @@
     } else if (!!dashboard.has('#tasks.row').length) {
       dashboard.prepend('<div class="homepage-heading">' + emr.message('coreapps.app.system.administration.label') + '</div>');
     }
-  }
-
-  function replaceNoneLabelOnEmptyWidgets() {
-    // replace 'None' with '-NO DATA-' in each widget
-    const noDataLabel = "<span class='label'>" + emr.message('cfl.emptyDashboardWidget.label') + "</span>";
-    const emptyWidgetBody = `<div class='info-body empty'>${noDataLabel}</div>`;
-    jq('.info-body').each((_, widgetBody) => {
-      if (!jq(widgetBody).children().length || (jq(widgetBody).find('ul').length && !jq(widgetBody).find('ul > li').length)) {
-        jq(widgetBody).replaceWith(emptyWidgetBody);
-      }
-    });
   }
 
   function redesignAllergyUI() {
