@@ -60,7 +60,9 @@ public class InstallMultiProjectAdviceActivatorStep implements ModuleActivatorSt
             AppFrameworkService.class.getMethod("getExtensionsForCurrentUser"),
             AppFrameworkService.class.getMethod("getExtensionsForCurrentUser", String.class),
             AppFrameworkService.class.getMethod(
-                "getExtensionsForCurrentUser", String.class, AppContextModel.class)));
+                "getExtensionsForCurrentUser", String.class, AppContextModel.class),
+            AppFrameworkService.class.getMethod("getAllEnabledExtensions"),
+            AppFrameworkService.class.getMethod("getAllEnabledExtensions", String.class)));
 
     Context.addAdvice(
         PatientProgramDetailsService.class,

@@ -118,8 +118,7 @@ header .logo {
     margin: 5px 0;
 }
 
-header .logo a {
-    content: url('../images/logo/connect_for_life.png');
+header .logo img {
     height: 30px !important;
     width: auto !important;
 }
