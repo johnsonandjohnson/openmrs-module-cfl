@@ -115,12 +115,11 @@ header a:active, a:hover {
 
 header .logo {
     max-height: initial;
-    margin: 3px 0px 0px 0px;
+    margin: 5px 0;
 }
 
 header .logo a {
-    content: url('../images/logo/cfl_dengue.png');
-    height: 50px !important;
+    height: 30px !important;
     width: auto !important;
 }
 
