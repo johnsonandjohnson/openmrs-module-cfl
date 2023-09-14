@@ -103,4 +103,20 @@
             </list>
         </property>
     </bean>
+
+    <bean id="clfMultiProjectDefaultPatientTemplateService"
+          class="org.openmrs.module.cfl.api.service.messages.impl.MultiProjectDefaultPatientTemplateServiceImpl" primary="true">
+        <property name="patientTemplateService" ref="messages.patientTemplateService" />
+        <property name="templateService" ref="messages.templateService" />
+        <property name="actorService" ref="messages.actorService" />
+        <property name="messageDetailsMapper" ref="messages.MessageDetailsMapper" />
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.messages.api.service.DefaultPatientTemplateService</value>
+                <ref bean="clfMultiProjectDefaultPatientTemplateService"/>
+            </list>
+        </property>
+    </bean>
 </beans>
