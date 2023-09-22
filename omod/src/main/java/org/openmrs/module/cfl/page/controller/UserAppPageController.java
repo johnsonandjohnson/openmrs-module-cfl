@@ -37,7 +37,6 @@ import org.openmrs.ui.framework.page.PageModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -93,7 +92,7 @@ public class UserAppPageController {
   }
 
   @ResponseBody
-  @RequestMapping(value = "/cfl/verifyJson", method = RequestMethod.POST)
+  @RequestMapping(value = "/cfl/verifyJson.htm")
   public SimpleObject verifyJson(@RequestParam("json") String json) {
     SimpleObject so = new SimpleObject();
     try {
