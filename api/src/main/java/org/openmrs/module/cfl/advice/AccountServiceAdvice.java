@@ -10,7 +10,7 @@
 
 package org.openmrs.module.cfl.advice;
 
-import org.openmrs.BaseOpenmrsMetadata;
+import org.openmrs.Retireable;
 import org.openmrs.api.APIException;
 import org.openmrs.module.adminui.account.Account;
 import org.openmrs.module.adminui.account.AccountService;
@@ -69,7 +69,7 @@ public class AccountServiceAdvice implements AfterReturningAdvice {
    */
   private boolean isDisabled(Account account) {
     return account.getUserAccounts().stream()
-        .map(BaseOpenmrsMetadata::getRetired)
+        .map(Retireable::getRetired)
         .reduce(true, (acc1, acc2) -> acc1 && acc2);
   }
 
