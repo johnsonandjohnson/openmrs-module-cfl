@@ -55,6 +55,10 @@ public final class CfldistributionGlobalParameterConstants {
         "productive environments. Default: false";
     public static final String CFL_SHOW_STACKTRACE_IN_ERROR_PAGE_DEFAULT_VALUE = "false";
 
+    public static final String CONDITIONS_LIST_NON_CODED_UUID_KEY = "conditionList.nonCodedUuid";
+    public static final String CONDITIONS_LIST_NON_CODED_UUID_DESC = "UUID of non coded concept";
+    public static final String GENERIC_OTHER_NON_CODED_CONCEPT_UUID = "5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
     private CfldistributionGlobalParameterConstants() {
 
     }

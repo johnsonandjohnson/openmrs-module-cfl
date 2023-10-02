@@ -85,23 +85,15 @@
         <!-- Regimens Info -->
         <span id="js-regimens-info" class="display-none">
             <lookup complexExpression = "
-                #set($resultText = '|')
-
-                #foreach($regimen in $regimens)
-                    #set($resultText = $resultText.concat($regimen.name).concat(':'))
-
-                    #foreach($drug in $regimen.regimenDrugs)
-                        #set($resultText = $resultText.concat($drug.drug.name).concat('_').concat($drug.doseUnits.name).concat('_').concat($drug.dose).concat('_').concat($drug.frequency.name).concat(';'))
-                    #end
-                
-                    #set($resultText = $resultText.concat('|'))
-
-                #end
-
-                #set($resultText = $resultText.trim())
-
-                $!{resultText}
-            "/>
+                    &lt;script type=&quot;text/javascript&quot;>
+                        try {
+                            const regimens = JSON.parse('$regimens');
+                            window.regimens = regimens;
+                        } catch (e) {
+                            window.regimens = [];
+                        }
+                    &lt;/script>
+                "/>
         </span>
         <!-- Treatments Info -->
         <span class="display-none">
@@ -306,7 +298,7 @@
                         setValue(firstEmptyTreatmentId + '-js-treatment-reason.value', treatment.reason);
                         const treatmentDateStarted = new Date(treatment.startDate);
                         setValue(firstEmptyTreatmentId + '-js-treatment-date-started.value', getFormattedDate(new Date(treatment.startDate)));
-                        
+
                         if (!!treatment.stopDate) {
                             const treatmentDateStopped = new Date(treatment.stopDate);
                             setValue(firstEmptyTreatmentId + '-js-treatment-date-stopped.value', treatmentDateStopped.getUTCFullYear() + '-' + (treatmentDateStopped.getUTCMonth() + 1) + '-' + treatmentDateStopped.getUTCDate());
@@ -314,25 +306,17 @@
 
                         //fill in treatment details table
                         const selectedRegimenValue = $('#' + firstEmptyTreatmentId + '-js-regimen-name > select').val();
-                        for (let i = 0; i &lt; splitRegimens.length; i++) {
-                            const splitRegimenDetails = splitRegimens[i].split(':');
-
-                            if (splitRegimenDetails[0] === selectedRegimenValue) {
-                                const splitRegimenDrugDetails = splitRegimenDetails[1]?.split(';')?.filter(String);
-
-                                for (let j = 0; j &lt; splitRegimenDrugDetails.length; j++) {
-                                    const splitRegimenDrugDetailsObject = splitRegimenDrugDetails[j];
-
-                                    if (splitRegimenDrugDetailsObject.length) {
-                                        const drugFields = splitRegimenDrugDetailsObject.split('_');
-                                        $('#' + firstEmptyTreatmentId + '-js-treatment-details-table-body').append('<tr><td>' + drugFields[0] + '</td><td>' + drugFields[1] + '</td><td>' + drugFields[2] + '</td><td>' + drugFields[3] + '</td></tr>');
-                                    }
-                                }
-
-                                break;
-                            }
-                        }
+						const regimenDetails = window.regimens.find(regimen => regimen.name === selectedRegimenValue);
+						if (regimenDetails) {
+							regimenDetails.regimenDrugs.forEach(drug => {
+								const drugName = drug.drug.display;
+								const doseUnit = drug.doseUnits.display;
+								const numberOfUnits = drug.dose;
+								const frequency = drug.frequency.display;
+								$('#' + firstEmptyTreatmentId + '-js-treatment-details-table-body').append('<tr><td>' + drugName + '</td><td>' + doseUnit + '</td><td>' + numberOfUnits + '</td><td>' + frequency + '</td></tr>');
+							});
                         $('#' + firstEmptyTreatmentId + '-js-treatment-details-table').show();
+						}
 
                         //fill in treatment interruptions
                         if (treatment.interruptions.length) {
@@ -385,38 +369,23 @@
                     }
                 });
             }
-            
+
             const setRegimenNameOnChangeListener = () => {
                 for (let i = 0; i &lt; MAX_TREATMENTS; i++) {
                     $('#' + i + '-js-regimen-name > select').change(function() {
                         const selectedRegimenValue = $(this).val();
-                        const regimensInfo = $('#js-regimens-info').text().trim();
-                        const splitRegimens = regimensInfo?.split('|')?.filter(String);
-                        const regimenErrorField = $(this).closest('span').find('.error');
-                        $('#' + i + '-js-treatment-details-table-body').empty();
-                        
-                        if (selectedRegimenValue) {
-                            for (let j = 0; j &lt; splitRegimens.length; j++) {
-                                const splitRegimenDetails = splitRegimens[j].split(':');
-
-                                if (splitRegimenDetails[0] === selectedRegimenValue) {
-                                    const splitRegimenDrugDetails = splitRegimenDetails[1]?.split(';')?.filter(String);
-
-                                    for (let k = 0; k &lt; splitRegimenDrugDetails.length; k++) {
-                                        const splitRegimenDrugDetailsObject = splitRegimenDrugDetails[k];
-
-                                        if (splitRegimenDrugDetailsObject.length) {
-                                            const drugFields = splitRegimenDrugDetailsObject.split('_');
-                                            $('#' + i + '-js-treatment-details-table-body').append('<tr><td>' + drugFields[0] + '</td><td>' + drugFields[1] + '</td><td>' + drugFields[2] + '</td><td>' + drugFields[3] + '</td></tr>');
-                                        }
-                                    }
-
-                                    break;
-                                }
-                            }
-                            $('#' + i + '-js-treatment-details-table').show();
-                            regimenErrorField.hide();
-                        } else {
+						const regimenDetails = window.regimens.find(regimen => regimen.name === selectedRegimenValue);
+						const regimenErrorField = $(this).closest('span').find('.error');
+						$('#' + i + '-js-treatment-details-table-body').empty();
+						if (regimenDetails) {
+							regimenDetails.regimenDrugs.forEach(drug => {
+								const drugName = drug.drug.display;
+								const doseUnit = drug.doseUnits.display;
+								const numberOfUnits = drug.dose;
+								const frequency = drug.frequency.display;
+								$('#' + i + '-js-treatment-details-table-body').append('<tr><td>' + drugName + '</td><td>' + doseUnit + '</td><td>' + numberOfUnits + '</td><td>' + frequency + '</td></tr>');
+							});
+						} else {
                             $('#' + i + '-js-treatment-details-table').hide();
                             regimenErrorField.html("Required").show();
                         }
@@ -540,7 +509,7 @@
                     hideEmptyHistoricalTreatmentsMessage();
                     $('#js-historical-treatments .js-treatment:not(:visible)').first().show();
 
-                    //hide 'Add Historical Treatment' if all historical treatments are visible 
+                    //hide 'Add Historical Treatment' if all historical treatments are visible
                     if (!$('#js-historical-treatments .js-treatment:not(:visible)').length) {
                         $('button#js-add-historical-treatment').hide();
                     }
@@ -636,7 +605,7 @@
                 $('#form-content-spinner').hide();
                 $('#form-content').show();
             }
-        
+
             //executions
             setSaveButtonOnClickListener();
             setReturnButtonOnClickListener();
@@ -1149,6 +1118,6 @@
             </button>
         </div>
         <postSubmissionAction class="org.openmrs.module.cflcore.api.htmlformentry.action.RemoveEncounterAction"/>
-        <redirectOnSave url="/htmlformentryui/htmlform/enterHtmlFormWithStandardUi.page?patientId={{patient.id}}&amp;formUuid=ad796f8c-b966-11eb-9ad8-0242ac120002&amp;returnUrl=/openmrs/coreapps/clinicianfacing/patient.page?patientId={{patient.id}}"/>
+        <redirectOnSave url="/coreapps/clinicianfacing/patient.page?patientId={{patient.id}}"/>
     </ifMode>
 </htmlform>
