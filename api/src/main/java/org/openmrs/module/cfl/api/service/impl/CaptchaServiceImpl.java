@@ -10,17 +10,20 @@
 
 package org.openmrs.module.cfl.api.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.cfl.CfldistributionGlobalParameterConstants;
 import org.openmrs.module.cfl.api.service.CaptchaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URI;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 public class CaptchaServiceImpl implements CaptchaService {
@@ -32,31 +35,35 @@ public class CaptchaServiceImpl implements CaptchaService {
   private static final String RECAPTCHA_URL_TEMPLATE =
       "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s&remoteip=%s";
 
-  private RestTemplate restTemplate = new RestTemplate();
+  private final ObjectMapper objectMapper;
+  private final HttpClient httpClient;
 
   private ReCaptchaAttemptService reCaptchaAttemptService;
 
   public CaptchaServiceImpl() {
-    this(new RestTemplate());
+    this(new HttpClient(new MultiThreadedHttpConnectionManager()));
   }
 
-  CaptchaServiceImpl(RestTemplate restTemplate) {
-    this.restTemplate = restTemplate;
+  CaptchaServiceImpl(HttpClient httpClient) {
+    this.objectMapper = new ObjectMapper();
+    this.httpClient = httpClient;
   }
 
   @Override
   public void processResponse(HttpServletRequest request) {
-
-    String response = request.getParameter("g-recaptcha-response");
-
+    final String response = request.getParameter("g-recaptcha-response");
     securityCheck(response, request);
-    final URI verifyUri =
-        URI.create(
-            String.format(
-                RECAPTCHA_URL_TEMPLATE, getReCaptchaSecret(), response, getClientIP(request)));
+
+    final String verifyUri =
+        String.format(RECAPTCHA_URL_TEMPLATE, getReCaptchaSecret(), response, getClientIP(request));
+
     try {
+      final HttpMethod getGoogleResponseMethod = new GetMethod(verifyUri);
+      httpClient.executeMethod(getGoogleResponseMethod);
+
       final GoogleResponse googleResponse =
-          restTemplate.getForObject(verifyUri, GoogleResponse.class);
+          objectMapper.readValue(
+              getGoogleResponseMethod.getResponseBodyAsString(), GoogleResponse.class);
       LOGGER.debug("Google's response: {} ", googleResponse);
 
       if (!googleResponse.isSuccess()) {
@@ -65,9 +72,9 @@ public class CaptchaServiceImpl implements CaptchaService {
         }
         throw new ReCaptchaInvalidException("reCaptcha was not successfully validated");
       }
-    } catch (RestClientException rce) {
+    } catch (IOException exception) {
       throw new ReCaptchaInvalidException(
-          "Login unavailable at this time.  Please try again later.", rce);
+          "Login unavailable at this time.  Please try again later.", exception);
     }
     reCaptchaAttemptService.reCaptchaSucceeded(getClientIP(request));
   }
