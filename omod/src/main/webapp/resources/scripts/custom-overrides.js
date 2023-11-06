@@ -90,7 +90,8 @@
   }
 
   function setHomeBreadCrumbOnPatientDashboard() {
-    jq('#breadcrumbs li:first-child a').after(emr.message('cfl.home.title'));
+    const breadCrumbElement = "<a href='/openmrs'>" + emr.message('cfl.home.title') + "</a>";
+    jq('#breadcrumbs li:first-child a').after(breadCrumbElement);
   }
 
   // OpenMRS bug: remove occasional (/undefined) from the System Administration breadcrumbs
