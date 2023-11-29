@@ -703,7 +703,7 @@
                                                 <span class="color-red">*</span>
                                             </span>
                                             <span id="{n}-js-regimen-name">
-                                                <regimen conceptId="c7e17ce8-d832-4349-a326-b20f5ae7f432" includeRetired="{includeRetired}" addNew="false"
+                                                <regimen conceptId="c7e17ce8-d832-4349-a326-b20f5ae7f432" addNew="false"
                                                          required="true"/>
                                             </span>
                                         </div>
@@ -1092,16 +1092,16 @@
                             </div>
                         </div>
                     </template>
-                    <render n="0" includeRetired="false"/>
-                    <render n="1" includeRetired="true"/>
-                    <render n="2" includeRetired="true"/>
-                    <render n="3" includeRetired="true"/>
-                    <render n="4" includeRetired="true"/>
-                    <render n="5" includeRetired="true"/>
-                    <render n="6" includeRetired="true"/>
-                    <render n="7" includeRetired="true"/>
-                    <render n="8" includeRetired="true"/>
-                    <render n="9" includeRetired="true"/>
+                    <render n="0"/>
+                    <render n="1"/>
+                    <render n="2"/>
+                    <render n="3"/>
+                    <render n="4"/>
+                    <render n="5"/>
+                    <render n="6"/>
+                    <render n="7"/>
+                    <render n="8"/>
+                    <render n="9"/>
                 </repeat>
             </div>
             <div class="flex-row justify-content-end">
