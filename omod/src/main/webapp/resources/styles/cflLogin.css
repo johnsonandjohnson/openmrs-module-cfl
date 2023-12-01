@@ -63,18 +63,6 @@ form#login-form input.form-control-lg.credential-input {
     color: #10708E;
 }
 
-#log-in-wrapper {
-    margin-bottom: 5px;
-}
-
-.log-in-header-text {
-    font-weight: bold;
-    margin-left: 15px;
-    padding-bottom: 10px;
-    font-size: 16px;
-    color: #2B3640;
-}
-
 #main-content {
     background-color: white;
     border-radius: 3px;

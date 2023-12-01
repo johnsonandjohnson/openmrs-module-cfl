@@ -160,10 +160,6 @@
                                 <% } %>
                                 </div>
 
-                                <div id="log-in-wrapper">
-                                    <span class="log-in-header-text">${ui.message("cfl.loginPage.logIn.header")}</span><br>
-                                </div>
-
                                 <div id="main-content">
                                     <% if (!selectLocation) { %>
                                     <p class="left username-block">
