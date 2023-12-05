@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.openmrs.module</groupId>
         <artifactId>cfl</artifactId>
-        <version>1.4.2-1-ship-SNAPSHOT</version>
+        <version>1.5.0-ship</version>
     </parent>
 
     <artifactId>cfl-omod</artifactId>
