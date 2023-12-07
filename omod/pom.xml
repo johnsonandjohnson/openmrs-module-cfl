@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.openmrs.module</groupId>
         <artifactId>cfl</artifactId>
-        <version>1.4.1</version>
+        <version>1.5.0</version>
     </parent>
 
     <artifactId>cfl-omod</artifactId>
@@ -79,6 +79,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>webservices.rest-omod-1.9</artifactId>
+        </dependency>
+        <dependency>
             <groupId>rubygems</groupId>
             <artifactId>compass</artifactId>
             <version>0.11.7</version>
@@ -91,6 +95,10 @@
             <version>3.2.5</version>
             <type>gem</type>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>multiproject-omod</artifactId>
         </dependency>
     </dependencies>
 

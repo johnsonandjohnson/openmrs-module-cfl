@@ -45,11 +45,11 @@ public class CreateGlobalParametersActivatorStepTest {
     new CreateGlobalParametersActivatorStep().startup(log);
 
     verify(administrationService)
-        .getGlobalProperty(CfldistributionGlobalParameterConstants.CFL_DISTRO_BOOTSTRAPPED_KEY);
+        .getGlobalProperty(CfldistributionGlobalParameterConstants.CFL_DISTRO_BOOTSTRAPPED_KEY, null);
     verify(administrationService)
         .getGlobalProperty(
-            CfldistributionGlobalParameterConstants.SHOULD_DISABLE_APPS_AND_EXTENSIONS_KEY);
+            CfldistributionGlobalParameterConstants.SHOULD_DISABLE_APPS_AND_EXTENSIONS_KEY, null);
     verify(administrationService)
-        .getGlobalProperty(CFLConstants.LOCATION_ATTRIBUTE_GLOBAL_PROPERTY_NAME);
+        .getGlobalProperty(CFLConstants.LOCATION_ATTRIBUTE_GLOBAL_PROPERTY_NAME, null);
   }
 }

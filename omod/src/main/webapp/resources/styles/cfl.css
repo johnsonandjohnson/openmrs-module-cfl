@@ -118,8 +118,7 @@ header .logo {
     margin: 5px 0;
 }
 
-header .logo a {
-    content: url('../images/logo/connect_for_life.png');
+header .logo img {
     height: 30px !important;
     width: auto !important;
 }
@@ -877,3 +876,9 @@ ul#formBreadcrumb li.doing ul li.focused {
         padding: 0 8rem 0;
     }
 }
+
+.homepage-heading {
+   font-size: 40px;
+   color: #333333;
+   padding-top: 1rem;
+ }

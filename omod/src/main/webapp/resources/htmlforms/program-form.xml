@@ -11,51 +11,56 @@
 <htmlform formUuid="ad796f8c-b966-11eb-9ad8-0242ac120002" formName="Program Form"
           formEncounterType="b3af129b-90c9-4f84-966e-f4f9515083e6" formVersion="1.0">
     <uiInclude provider="cfl" css="htmlForm.css"/>
+
+    <macros>
+        <macro key="treatments" expression="treatmentFunctions.getAllTreatmentsJSON()"/>
+    </macros>
+
     <style type="text/css">
         #htmlform {
-            border: 0;
-            background: none;
-            padding: 0;
-            overflow: initial;
+        border: 0;
+        background: none;
+        padding: 0;
+        overflow: initial;
         }
 
         #htmlform .treatment-details-table th {
-            font-weight: bold;
+        font-weight: bold;
         }
 
         #htmlform table.treatment-details-table,
         #htmlform table.treatment-details-table thead,
         #htmlform table.treatment-details-table thead tr,
         #htmlform table.treatment-details-table thead tr th {
-            background-color: transparent !important;
+        background-color: transparent !important;
         }
 
         #htmlform .treatment-details-table tr {
-            border: none !important;
+        border: none !important;
         }
 
         #htmlform .treatment-details-table tr:nth-child(odd) td {
-            background-color: #f2f2f2 !important;
+        background-color: #f2f2f2 !important;
         }
 
         #htmlform .treatment-details-table td {
-            color: inherit;
-            cursor: default;
-            padding: 5px 10px;
+        color: inherit;
+        cursor: default;
+        padding: 5px 10px;
         }
 
         #htmlform htmlform input:not([type='button']),
         #htmlform htmlform select,
         #htmlform htmlform label {
-            height: 2.5rem;
+        height: 2.5rem;
         }
 
         #htmlform htmlform .error {
-            color: red;
+        color: red;
         }
 
         #title {
-            margin-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
         }
     </style>
 
@@ -85,33 +90,21 @@
         <!-- Regimens Info -->
         <span id="js-regimens-info" class="display-none">
             <lookup complexExpression = "
-                #set($resultText = '|')
-
-                #foreach($regimen in $regimens)
-                    #set($resultText = $resultText.concat($regimen.name).concat(':'))
-
-                    #foreach($drug in $regimen.regimenDrugs)
-                        #set($resultText = $resultText.concat($drug.drug.name).concat('_').concat($drug.doseUnits.name).concat('_').concat($drug.dose).concat('_').concat($drug.frequency.name).concat(';'))
-                    #end
-                
-                    #set($resultText = $resultText.concat('|'))
-
-                #end
-
-                #set($resultText = $resultText.trim())
-
-                $!{resultText}
-            "/>
+                    &lt;script type=&quot;text/javascript&quot;>
+                        try {
+                            const regimens = JSON.parse('$regimens');
+                            window.regimens = regimens;
+                        } catch (e) {
+                            window.regimens = [];
+                        }
+                    &lt;/script>
+                "/>
         </span>
         <!-- Treatments Info -->
         <span class="display-none">
-            <lookup complexExpression = "
-                &lt;script type=&quot;text/javascript&quot;>
-                    try {
-                        window.treatments = JSON.parse('$treatments');
-                    } catch (exception) {}
-                &lt;/script>
-            "/>
+            <script>
+                window.treatments = $treatments;
+            </script>
         </span>
         <!-- Delete Treatment Confirmation Modal -->
         <div id="js-delete-treatment-confirmation-modal" class="display-none">
@@ -137,524 +130,509 @@
         const getCurrentTreatmentId = () => parseInt($('#js-current-treatment .js-treatment').attr('id'));
 
         beforeSubmit.push(function() {
-            let isFormValid = true;
-            const currentTreatmentId = getCurrentTreatmentId();
+        let isFormValid = true;
+        const currentTreatmentId = getCurrentTreatmentId();
 
-            for (let i = 0; i &lt; MAX_TREATMENTS; i++) {
-                if ($('#' + i + '-js-treatment-data').is(':visible')) {
-                    //validation of Regimen Name
-                    const regimenField =  $('#' + i + '-js-regimen-name > select');
-                    const regimenValue = regimenField.val();
-                    const regimenErrorField = regimenField.closest('span').find('.error');
-                    regimenErrorField.hide();
+        for (let i = 0; i &lt; MAX_TREATMENTS; i++) {
+        if ($('#' + i + '-js-treatment-data').is(':visible')) {
+        //validation of Regimen Name
+        const regimenField =  $('#' + i + '-js-regimen-name > select');
+        const regimenValue = regimenField.val();
+        const regimenErrorField = regimenField.closest('span').find('.error');
+        regimenErrorField.hide();
 
-                    if (!regimenValue) {
-                        regimenErrorField.html("Required").show();
-                        isFormValid = false;
-                    }
+        if (!regimenValue) {
+        regimenErrorField.html("Required").show();
+        isFormValid = false;
+        }
 
-                    //validation of Treatment Date Started
-                    const treatmentDateStartedValue = getValue(i + '-js-treatment-date-started.value');
-                    const treatmentDateStartedErrorField = getField(i + '-js-treatment-date-started.error');
-                    treatmentDateStartedErrorField.hide();
+        //validation of Treatment Date Started
+        const treatmentDateStartedValue = getValue(i + '-js-treatment-date-started.value');
+        const treatmentDateStartedErrorField = getField(i + '-js-treatment-date-started.error');
+        treatmentDateStartedErrorField.hide();
 
-                    if (!treatmentDateStartedValue) {
-                        treatmentDateStartedErrorField.html("Required").show();
-                        isFormValid = false;
-                    }
+        if (!treatmentDateStartedValue) {
+        treatmentDateStartedErrorField.html("Required").show();
+        isFormValid = false;
+        }
 
-                    //validation of Reason For Treatment
-                    const treatmentReasonValue = getValue(i + '-js-treatment-reason.value');
-                    const treatmentReasonErrorField = getField(i + '-js-treatment-reason.error');
-                    treatmentReasonErrorField.hide();
+        //validation of Reason For Treatment
+        const treatmentReasonValue = getValue(i + '-js-treatment-reason.value');
+        const treatmentReasonErrorField = getField(i + '-js-treatment-reason.error');
+        treatmentReasonErrorField.hide();
 
-                    if (!treatmentReasonValue) {
-                        treatmentReasonErrorField.html("Required").show();
-                        isFormValid = false;
-                    }
+        if (!treatmentReasonValue) {
+        treatmentReasonErrorField.html("Required").show();
+        isFormValid = false;
+        }
 
-                    //validation of Treatment Date Stopped
-                    const treatmentDateStoppedValue = getValue(i + '-js-treatment-date-stopped.value');
-                    const treatmentDateStoppedErrorField = getField(i + '-js-treatment-date-stopped.error');
-                    treatmentDateStoppedErrorField.hide();
+        //validation of Treatment Date Stopped
+        const treatmentDateStoppedValue = getValue(i + '-js-treatment-date-stopped.value');
+        const treatmentDateStoppedErrorField = getField(i + '-js-treatment-date-stopped.error');
+        treatmentDateStoppedErrorField.hide();
 
-                    //Treatment Date Stopped is mandatory only for Historical Treatments
-                    if (i !== currentTreatmentId &amp;&amp; (!treatmentDateStoppedValue)) {
-                        treatmentDateStoppedErrorField.html("Required").show();
-                        isFormValid = false;
-                    }
+        //Treatment Date Stopped is mandatory only for Historical Treatments
+        if (i !== currentTreatmentId &amp;&amp; (!treatmentDateStoppedValue)) {
+        treatmentDateStoppedErrorField.html("Required").show();
+        isFormValid = false;
+        }
 
-                    //validate if Treatment Dates do not overlap with other Treatment Dates
-                    const parsedTreatmentDateStarted = Date.parse(treatmentDateStartedValue);
-                    const parsedTreatmentDateStopped = Date.parse(treatmentDateStoppedValue);
+        //validate if Treatment Dates do not overlap with other Treatment Dates
+        const parsedTreatmentDateStarted = Date.parse(treatmentDateStartedValue);
+        const parsedTreatmentDateStopped = Date.parse(treatmentDateStoppedValue);
 
-                    for (let k = 0; k &lt; MAX_TREATMENTS; k++) {
-                        if (i !== k &amp;&amp; $('#' + k + '-js-treatment-data').is(':visible')) {
-                            const otherParsedTreatmentDateStarted = Date.parse(getValue(k + '-js-treatment-date-started.value'));
-                            const otherParsedTreatmentDateStopped = Date.parse(getValue(k + '-js-treatment-date-stopped.value'));
-                            if (
-                                !parsedTreatmentDateStopped &amp;&amp;
-                                parsedTreatmentDateStarted &lt; otherParsedTreatmentDateStopped &amp;&amp;
-                                parsedTreatmentDateStarted > otherParsedTreatmentDateStarted
-                            ) {
-                                treatmentDateStartedErrorField.html("The regimen dates are in conflict. Regimens cannot overlap. Please correct the date(s).").show();
-                                isFormValid = false;
-                            } else if (
-                                (!otherParsedTreatmentDateStopped &amp;&amp; otherParsedTreatmentDateStarted &lt; parsedTreatmentDateStopped &amp;&amp; otherParsedTreatmentDateStarted > parsedTreatmentDateStarted) ||
-                                (parsedTreatmentDateStarted &lt; otherParsedTreatmentDateStopped &amp;&amp; parsedTreatmentDateStopped > otherParsedTreatmentDateStarted)
-                            ) {
-                                treatmentDateStartedErrorField.html("The regimen dates are in conflict. Regimens cannot overlap. Please correct the date(s).").show();
-                                treatmentDateStoppedErrorField.html("The regimen dates are in conflict. Regimens cannot overlap. Please correct the date(s).").show();
-                                isFormValid = false;
-                            }
-                        }
-                    }
+        for (let k = 0; k &lt; MAX_TREATMENTS; k++) {
+        if (i !== k &amp;&amp; $('#' + k + '-js-treatment-data').is(':visible')) {
+        const otherParsedTreatmentDateStarted = Date.parse(getValue(k + '-js-treatment-date-started.value'));
+        const otherParsedTreatmentDateStopped = Date.parse(getValue(k + '-js-treatment-date-stopped.value'));
+        if (
+        !parsedTreatmentDateStopped &amp;&amp;
+        parsedTreatmentDateStarted &lt; otherParsedTreatmentDateStopped &amp;&amp;
+        parsedTreatmentDateStarted > otherParsedTreatmentDateStarted
+        ) {
+        treatmentDateStartedErrorField.html("The regimen dates are in conflict. Regimens cannot overlap. Please correct the date(s).").show();
+        isFormValid = false;
+        } else if (
+        (!otherParsedTreatmentDateStopped &amp;&amp; otherParsedTreatmentDateStarted &lt; parsedTreatmentDateStopped &amp;&amp; otherParsedTreatmentDateStarted > parsedTreatmentDateStarted) ||
+        (parsedTreatmentDateStarted &lt; otherParsedTreatmentDateStopped &amp;&amp; parsedTreatmentDateStopped > otherParsedTreatmentDateStarted)
+        ) {
+        treatmentDateStartedErrorField.html("The regimen dates are in conflict. Regimens cannot overlap. Please correct the date(s).").show();
+        treatmentDateStoppedErrorField.html("The regimen dates are in conflict. Regimens cannot overlap. Please correct the date(s).").show();
+        isFormValid = false;
+        }
+        }
+        }
 
-                    //validate if Treatment Date Started is earlier than Treatment Date Stopped
-                    if (parsedTreatmentDateStopped &lt; parsedTreatmentDateStarted) {
-                        treatmentDateStoppedErrorField.html("Treatment Date Stopped cannot be earlier than Treatment Date Started").show();
-                        isFormValid = false;
-                    }
+        //validate if Treatment Date Started is earlier than Treatment Date Stopped
+        if (parsedTreatmentDateStopped &lt; parsedTreatmentDateStarted) {
+        treatmentDateStoppedErrorField.html("Treatment Date Stopped cannot be earlier than Treatment Date Started").show();
+        isFormValid = false;
+        }
 
-                    //validation of Interruption Date fields
-                    for (let j = 0; j &lt; MAX_TREATMENT_INTERRUPTIONS; j++) {
-                        if ($('#' + i + '-' + j + '-js-interruption').is(':visible')) {
-                            const interruptionDateValue = getValue(i + '-' + j + '-js-interruption-date.value');
-                            const parsedInterruptionDateValue = Date.parse(interruptionDateValue);
-                            const interruptionDateErrorField = getField(i + '-' + j + '-js-interruption-date.error');
-                            interruptionDateErrorField.hide();
+        //validation of Interruption Date fields
+        for (let j = 0; j &lt; MAX_TREATMENT_INTERRUPTIONS; j++) {
+        if ($('#' + i + '-' + j + '-js-interruption').is(':visible')) {
+        const interruptionDateValue = getValue(i + '-' + j + '-js-interruption-date.value');
+        const parsedInterruptionDateValue = Date.parse(interruptionDateValue);
+        const interruptionDateErrorField = getField(i + '-' + j + '-js-interruption-date.error');
+        interruptionDateErrorField.hide();
 
-                            //validate if Interruption Date is later than Treatment Date Started and earlier than Treatment Date Stopped
-                            if (!interruptionDateValue) {
-                                interruptionDateErrorField.html("Required").show();
-                                isFormValid = false;
-                            } else if (parsedInterruptionDateValue &lt; parsedTreatmentDateStarted || parsedInterruptionDateValue > parsedTreatmentDateStopped) {
-                                interruptionDateErrorField.html("Interruption Date must be between Treatment Date Started and Treatment Date Stopped").show();
-                                isFormValid = false;
-                            }
+        //validate if Interruption Date is later than Treatment Date Started and earlier than Treatment Date Stopped
+        if (!interruptionDateValue) {
+        interruptionDateErrorField.html("Required").show();
+        isFormValid = false;
+        } else if (parsedInterruptionDateValue &lt; parsedTreatmentDateStarted || parsedInterruptionDateValue > parsedTreatmentDateStopped) {
+        interruptionDateErrorField.html("Interruption Date must be between Treatment Date Started and Treatment Date Stopped").show();
+        isFormValid = false;
+        }
 
-                            //validate if Restart Date is later or the same as Interruption Date
-                            const restartDateValue = getValue(i + '-' + j + '-js-interruption-restart-date.value');
-                            const parsedRestartDateValue = Date.parse(restartDateValue);
-                            const restartDateErrorField = getField(i + '-' + j + '-js-interruption-restart-date.error');
-                            restartDateErrorField.hide();
+        //validate if Restart Date is later or the same as Interruption Date
+        const restartDateValue = getValue(i + '-' + j + '-js-interruption-restart-date.value');
+        const parsedRestartDateValue = Date.parse(restartDateValue);
+        const restartDateErrorField = getField(i + '-' + j + '-js-interruption-restart-date.error');
+        restartDateErrorField.hide();
 
-                            if (!restartDateValue) {
-                                restartDateErrorField.html("Required").show();
-                                isFormValid = false;
-                            } else if (parsedRestartDateValue &lt; parsedInterruptionDateValue) {
-                                restartDateErrorField.html("Restart Date cannot be earlier than Interruption Date").show();
-                                isFormValid = false;
-                            } else if (parsedRestartDateValue &lt; parsedTreatmentDateStarted || parsedRestartDateValue > parsedTreatmentDateStopped) {
-                                restartDateErrorField.html("Restart Date must be between Treatment Date Started and Treatment Date Stopped").show();
-                                isFormValid = false;
-                            }
-                        }
-                    }
-                }
-            }
+        if (!restartDateValue) {
+        restartDateErrorField.html("Required").show();
+        isFormValid = false;
+        } else if (parsedRestartDateValue &lt; parsedInterruptionDateValue) {
+        restartDateErrorField.html("Restart Date cannot be earlier than Interruption Date").show();
+        isFormValid = false;
+        } else if (parsedRestartDateValue &lt; parsedTreatmentDateStarted || parsedRestartDateValue > parsedTreatmentDateStopped) {
+        restartDateErrorField.html("Restart Date must be between Treatment Date Started and Treatment Date Stopped").show();
+        isFormValid = false;
+        }
+        }
+        }
+        }
+        }
 
-            //if form is valid then it will be submitted hence show that saving is in progress
-            if (isFormValid) {
-                $('#save-program-spinner').show();
-            }
+        //if form is valid then it will be submitted hence show that saving is in progress
+        if (isFormValid) {
+        $('#save-program-spinner').show();
+        }
 
-            return isFormValid;
+        return isFormValid;
         });
 
         $(document).ready(function() {
-            const getFormattedDate = (date) => date.getUTCFullYear() + '-' + (date.getUTCMonth() + 1) + '-' + date.getUTCDate();
+        const getFormattedDate = (date) => date.getUTCFullYear() + '-' + (date.getUTCMonth() + 1) + '-' + date.getUTCDate();
 
-            const moveFirstEmptyTreatmentToCurrentTreatmentSection = () => {
-                const currentTreatment = $('.js-treatment:not(:visible)').first();
-                const currentTreatmentId = parseInt(currentTreatment.attr('id'));
-                $('#' + currentTreatmentId + '-js-treatment').removeClass(EXPANDABLE_SECTION_CLASS);
-                $('#' + currentTreatmentId + '-js-treatment-expandable-data').show();
-                $('#' + currentTreatmentId + '-js-historical-treatment-buttons').hide();
-                $('#' + currentTreatmentId + '-js-treatment-date-stopped-mandatory-asterisk').hide();
-                currentTreatment.show().css('display', 'flex');
-                $('#js-current-treatment').append(currentTreatment.detach());
-            }
+        const moveFirstEmptyTreatmentToCurrentTreatmentSection = () => {
+        const currentTreatment = $('.js-treatment:not(:visible)').first();
+        const currentTreatmentId = parseInt(currentTreatment.attr('id'));
+        $('#' + currentTreatmentId + '-js-treatment').removeClass(EXPANDABLE_SECTION_CLASS);
+        $('#' + currentTreatmentId + '-js-treatment-expandable-data').show();
+        $('#' + currentTreatmentId + '-js-historical-treatment-buttons').hide();
+        $('#' + currentTreatmentId + '-js-treatment-date-stopped-mandatory-asterisk').hide();
+        currentTreatment.show().css('display', 'flex');
+        $('#js-current-treatment').append(currentTreatment.detach());
+        }
 
-            const loadTreatments = () => {
-                moveFirstEmptyTreatmentToCurrentTreatmentSection();
-                const currentTreatmentId = getCurrentTreatmentId();
+        const loadTreatments = () => {
+        moveFirstEmptyTreatmentToCurrentTreatmentSection();
+        const currentTreatmentId = getCurrentTreatmentId();
 
-                const regimensInfo = $('#js-regimens-info').text().trim();
-                const splitRegimens = regimensInfo?.split('|')?.filter(String);
-                const regimenErrorField = $(this).closest('span').find('.error');
+        const regimensInfo = $('#js-regimens-info').text().trim();
+        const splitRegimens = regimensInfo?.split('|')?.filter(String);
+        const regimenErrorField = $(this).closest('span').find('.error');
 
-                if (window.treatments &amp;&amp; window.treatments.length) {
-                    const sortedTreatments = window.treatments.slice().sort((treatmentA, treatmentB) => treatmentB.startDate - treatmentA.startDate);
-                    let firstEmptyTreatmentId = 1;
+        if (window.treatments &amp;&amp; window.treatments.length) {
+        const sortedTreatments = window.treatments.slice().sort((treatmentA, treatmentB) => treatmentB.startDate - treatmentA.startDate);
+        let firstEmptyTreatmentId = 1;
 
-                    sortedTreatments.forEach((treatment) => {
-                        let firstEmptyTreatment = $('#' + firstEmptyTreatmentId + '-js-treatment');
+        sortedTreatments.forEach((treatment) => {
+        let firstEmptyTreatment = $('#' + firstEmptyTreatmentId + '-js-treatment');
 
-                        //current treatment
-                        if (!treatment.stopDate || treatment.stopDate > Date.now()) {
-                            firstEmptyTreatmentId = currentTreatmentId;
-                            $('#js-stop-current-treatment').show();
-                            showCurrentTreatment();
-                        } else {
-                            hideEmptyHistoricalTreatmentsMessage();
-                            firstEmptyTreatment.show();
-                        }
+        //current treatment
+        if (!treatment.stopDate || treatment.stopDate > Date.now()) {
+        firstEmptyTreatmentId = currentTreatmentId;
+        $('#js-stop-current-treatment').show();
+        showCurrentTreatment();
+        } else {
+        hideEmptyHistoricalTreatmentsMessage();
+        firstEmptyTreatment.show();
+        }
 
-                        //fill in treatment data
-                        $('#' + firstEmptyTreatmentId + '-js-regimen-name > select').val(treatment.regimenName);
-                        setValue(firstEmptyTreatmentId + '-js-treatment-reason.value', treatment.reason);
-                        const treatmentDateStarted = new Date(treatment.startDate);
-                        setValue(firstEmptyTreatmentId + '-js-treatment-date-started.value', getFormattedDate(new Date(treatment.startDate)));
-                        
-                        if (!!treatment.stopDate) {
-                            const treatmentDateStopped = new Date(treatment.stopDate);
-                            setValue(firstEmptyTreatmentId + '-js-treatment-date-stopped.value', treatmentDateStopped.getUTCFullYear() + '-' + (treatmentDateStopped.getUTCMonth() + 1) + '-' + treatmentDateStopped.getUTCDate());
-                        }
+        //fill in treatment data
+        $('#' + firstEmptyTreatmentId + '-js-regimen-name > select').val(treatment.regimenName);
+        setValue(firstEmptyTreatmentId + '-js-treatment-reason.value', treatment.reason);
+        const treatmentDateStarted = new Date(treatment.startDate);
+        setValue(firstEmptyTreatmentId + '-js-treatment-date-started.value', getFormattedDate(new Date(treatment.startDate)));
 
-                        //fill in treatment details table
-                        const selectedRegimenValue = $('#' + firstEmptyTreatmentId + '-js-regimen-name > select').val();
-                        for (let i = 0; i &lt; splitRegimens.length; i++) {
-                            const splitRegimenDetails = splitRegimens[i].split(':');
+        if (!!treatment.stopDate) {
+        const treatmentDateStopped = new Date(treatment.stopDate);
+        setValue(firstEmptyTreatmentId + '-js-treatment-date-stopped.value', treatmentDateStopped.getUTCFullYear() + '-' + (treatmentDateStopped.getUTCMonth() + 1) + '-' + treatmentDateStopped.getUTCDate());
+        }
 
-                            if (splitRegimenDetails[0] === selectedRegimenValue) {
-                                const splitRegimenDrugDetails = splitRegimenDetails[1]?.split(';')?.filter(String);
+        //fill in treatment details table
+        const selectedRegimenValue = $('#' + firstEmptyTreatmentId + '-js-regimen-name > select').val();
+        const regimenDetails = window.regimens.find(regimen => regimen.name === selectedRegimenValue);
+        if (regimenDetails) {
+        regimenDetails.regimenDrugs.forEach(drug => {
+        const drugName = drug.drug.display;
+        const doseUnit = drug.doseUnits.display;
+        const numberOfUnits = drug.dose;
+        const frequency = drug.frequency.display;
+        $('#' + firstEmptyTreatmentId + '-js-treatment-details-table-body').append('<tr>' + '<td>' + drugName +
+        '</td>' + '<td>' + doseUnit + '</td>' + '<td>' + numberOfUnits + '</td>' + '<td>' + frequency +
+        '</td>' + '</tr>');
+        });
+        $('#' + firstEmptyTreatmentId + '-js-treatment-details-table').show();
+        }
 
-                                for (let j = 0; j &lt; splitRegimenDrugDetails.length; j++) {
-                                    const splitRegimenDrugDetailsObject = splitRegimenDrugDetails[j];
+        //fill in treatment interruptions
+        if (treatment.interruptions.length) {
+        $('#' + firstEmptyTreatmentId + '-js-add-first-interruption').hide();
 
-                                    if (splitRegimenDrugDetailsObject.length) {
-                                        const drugFields = splitRegimenDrugDetailsObject.split('_');
-                                        $('#' + firstEmptyTreatmentId + '-js-treatment-details-table-body').append('<tr><td>' + drugFields[0] + '</td><td>' + drugFields[1] + '</td><td>' + drugFields[2] + '</td><td>' + drugFields[3] + '</td></tr>');
-                                    }
-                                }
+        treatment.interruptions.sort((interruptionA, interruptionB) => interruptionA.startDate - interruptionB.startDate).forEach((interruption, interruptionIdx) => {
+        const interruptionStartDate = new Date(interruption.startDate);
+        setValue(firstEmptyTreatmentId + '-' + interruptionIdx + '-js-interruption-date.value', interruptionStartDate.getUTCFullYear() + '-' + (interruptionStartDate.getUTCMonth() + 1) + '-' + interruptionStartDate.getUTCDate());
+        setValue(firstEmptyTreatmentId + '-' + interruptionIdx + '-js-interruption-reason.value', interruption.reason);
+        const interruptionRestartDate = new Date(interruption.restartDate);
+        setValue(firstEmptyTreatmentId + '-' + interruptionIdx + '-js-interruption-restart-date.value', interruptionRestartDate.getUTCFullYear() + '-' + (interruptionRestartDate.getUTCMonth() + 1) + '-' + interruptionRestartDate.getUTCDate());
 
-                                break;
-                            }
-                        }
-                        $('#' + firstEmptyTreatmentId + '-js-treatment-details-table').show();
+        if (interruptionIdx > 0) {
+        $('button#' + firstEmptyTreatmentId + '-' + (interruptionIdx - 1) + '-js-delete-interruption').hide();
+        $('button#' + firstEmptyTreatmentId + '-' + (interruptionIdx - 1) + '-js-add-interruption').hide();
+        }
 
-                        //fill in treatment interruptions
-                        if (treatment.interruptions.length) {
-                            $('#' + firstEmptyTreatmentId + '-js-add-first-interruption').hide();
+        $('#' + firstEmptyTreatmentId + '-' + interruptionIdx + '-js-interruption').show();
+        });
+        }
 
-                            treatment.interruptions.sort((interruptionA, interruptionB) => interruptionA.startDate - interruptionB.startDate).forEach((interruption, interruptionIdx) => {
-                                const interruptionStartDate = new Date(interruption.startDate);
-                                setValue(firstEmptyTreatmentId + '-' + interruptionIdx + '-js-interruption-date.value', interruptionStartDate.getUTCFullYear() + '-' + (interruptionStartDate.getUTCMonth() + 1) + '-' + interruptionStartDate.getUTCDate());
-                                setValue(firstEmptyTreatmentId + '-' + interruptionIdx + '-js-interruption-reason.value', interruption.reason);
-                                const interruptionRestartDate = new Date(interruption.restartDate);
-                                setValue(firstEmptyTreatmentId + '-' + interruptionIdx + '-js-interruption-restart-date.value', interruptionRestartDate.getUTCFullYear() + '-' + (interruptionRestartDate.getUTCMonth() + 1) + '-' + interruptionRestartDate.getUTCDate());
+        firstEmptyTreatmentId = firstEmptyTreatmentId + 1;
+        });
+        }
+        }
 
-                                if (interruptionIdx > 0) {
-                                    $('button#' + firstEmptyTreatmentId + '-' + (interruptionIdx - 1) + '-js-delete-interruption').hide();
-                                    $('button#' + firstEmptyTreatmentId + '-' + (interruptionIdx - 1) + '-js-add-interruption').hide();
-                                }
+        const setMandatoryFieldOnChangeListener = (field) => {
+        $(field).change(function() {
+        const fieldValue = $(this).val();
+        const errorField = $(this).closest('span').find('.error');
 
-                                $('#' + firstEmptyTreatmentId + '-' + interruptionIdx + '-js-interruption').show();
-                            });
-                        }
+        if (!fieldValue) {
+        errorField.html("Required").show();
+        } else {
+        errorField.hide();
+        }
+        });
+        }
 
-                        firstEmptyTreatmentId = firstEmptyTreatmentId + 1;
-                    });
-                }
-            }
+        setTreatmentDateStoppedOnChangeListener = () => {
+        $("span[id$='-js-treatment-date-stopped'] > input").change(function() {
+        const fieldValue = $(this).val();
+        const errorField = $(this).closest('span').find('.error');
+        const treatmentId = parseInt($(this).closest('span').attr('id'));
 
-            const setMandatoryFieldOnChangeListener = (field) => {
-                $(field).change(function() {
-                    const fieldValue = $(this).val();
-                    const errorField = $(this).closest('span').find('.error');
+        if (!fieldValue &amp;&amp; $('#' + treatmentId + '-js-treatment-date-stopped-mandatory-asterisk:visible').length) {
+        errorField.html("Required").show();
+        } else {
+        errorField.hide();
+        }
+        });
+        }
 
-                    if (!fieldValue) {
-                        errorField.html("Required").show();
-                    } else {
-                        errorField.hide();
-                    }
-                });
-            }
+        const setRegimenNameOnChangeListener = () => {
+        for (let i = 0; i &lt; MAX_TREATMENTS; i++) {
+        $('#' + i + '-js-regimen-name > select').change(function() {
+        const selectedRegimenValue = $(this).val();
+        const regimenDetails = window.regimens.find(regimen => regimen.name === selectedRegimenValue);
+        const regimenErrorField = $(this).closest('span').find('.error');
+        $('#' + i + '-js-treatment-details-table-body').empty();
+        if (regimenDetails) {
+        regimenDetails.regimenDrugs.forEach(drug => {
+        const drugName = drug.drug.display;
+        const doseUnit = drug.doseUnits.display;
+        const numberOfUnits = drug.dose;
+        const frequency = drug.frequency.display;
+        $('#' + i + '-js-treatment-details-table-body').append('<tr>' + '<td>' + drugName + '</td>' + '<td>' +
+        doseUnit + '</td>' + '<td>' + numberOfUnits + '</td>' + '<td>' + frequency + '</td>' + '</tr>');
+        });
+        } else {
+        $('#' + i + '-js-treatment-details-table').hide();
+        regimenErrorField.html("Required").show();
+        }
+        });
+        }
+        }
 
-            setTreatmentDateStoppedOnChangeListener = () => {
-                $("span[id$='-js-treatment-date-stopped'] > input").change(function() {
-                    const fieldValue = $(this).val();
-                    const errorField = $(this).closest('span').find('.error');
-                    const treatmentId = parseInt($(this).closest('span').attr('id'));
+        const showCurrentTreatment = () => {
+        setValue(getCurrentTreatmentId() + '-js-is-current-treatment.value', IS_CURRENT_REGIMEN);
+        $('#js-empty-current-treatment').hide();
+        $('#js-current-treatment-buttons').show();
+        $('#js-current-treatment').show();
+        }
 
-                    if (!fieldValue &amp;&amp; $('#' + treatmentId + '-js-treatment-date-stopped-mandatory-asterisk:visible').length) {
-                        errorField.html("Required").show();
-                    } else {
-                        errorField.hide();
-                    }
-                });
-            }
-            
-            const setRegimenNameOnChangeListener = () => {
-                for (let i = 0; i &lt; MAX_TREATMENTS; i++) {
-                    $('#' + i + '-js-regimen-name > select').change(function() {
-                        const selectedRegimenValue = $(this).val();
-                        const regimensInfo = $('#js-regimens-info').text().trim();
-                        const splitRegimens = regimensInfo?.split('|')?.filter(String);
-                        const regimenErrorField = $(this).closest('span').find('.error');
-                        $('#' + i + '-js-treatment-details-table-body').empty();
-                        
-                        if (selectedRegimenValue) {
-                            for (let j = 0; j &lt; splitRegimens.length; j++) {
-                                const splitRegimenDetails = splitRegimens[j].split(':');
+        const hideCurrentTreatment = () => {
+        $('#js-empty-current-treatment').show();
+        $('#js-current-treatment-buttons').hide();
+        $('#js-current-treatment .js-treatment-details-table').hide();
+        $('#js-current-treatment').hide();
+        }
 
-                                if (splitRegimenDetails[0] === selectedRegimenValue) {
-                                    const splitRegimenDrugDetails = splitRegimenDetails[1]?.split(';')?.filter(String);
+        const setAddCurrentTreatmentButtonOnClickListener = () => {
+        $('#js-add-current-treatment').click(() => {
+        showCurrentTreatment();
+        });
+        }
 
-                                    for (let k = 0; k &lt; splitRegimenDrugDetails.length; k++) {
-                                        const splitRegimenDrugDetailsObject = splitRegimenDrugDetails[k];
+        const setDeleteCurrentTreatmentButtonOnClickListener = () => {
+        $('#js-delete-current-treatment').click(() => {
+        $('#js-delete-treatment-confirmation-modal').dialog({
+        resizable: false,
+        draggable: false,
+        width: 500,
+        modal: true,
+        title: "Delete Treatment?",
+        buttons: {
+        cancel: function() {
+        $(this).dialog('close');
+        },
+        confirm: function() {
+        hideCurrentTreatment();
+        setValue(getCurrentTreatmentId() + '-js-is-current-treatment.value', IS_NOT_CURRENT_REGIMEN);
 
-                                        if (splitRegimenDrugDetailsObject.length) {
-                                            const drugFields = splitRegimenDrugDetailsObject.split('_');
-                                            $('#' + i + '-js-treatment-details-table-body').append('<tr><td>' + drugFields[0] + '</td><td>' + drugFields[1] + '</td><td>' + drugFields[2] + '</td><td>' + drugFields[3] + '</td></tr>');
-                                        }
-                                    }
+        //clear treatment data fields
+        $('#js-current-treatment .js-treatment-data input:not(:button)').val([]);
+        $('#js-current-treatment .js-treatment-data select').val(null);
 
-                                    break;
-                                }
-                            }
-                            $('#' + i + '-js-treatment-details-table').show();
-                            regimenErrorField.hide();
-                        } else {
-                            $('#' + i + '-js-treatment-details-table').hide();
-                            regimenErrorField.html("Required").show();
-                        }
-                    });
-                }
-            }
+        //clear treatment interruptions fields
+        $('#js-current-treatment .js-interruption').hide();
+        $('#js-current-treatment .js-interruption input:not(:button)').val([]);
+        $('#js-current-treatment button.js-add-interruption').show();
+        $('#js-current-treatment button.js-delete-interruption').show();
 
-            const showCurrentTreatment = () => {
-                setValue(getCurrentTreatmentId() + '-js-is-current-treatment.value', IS_CURRENT_REGIMEN);
-                $('#js-empty-current-treatment').hide();
-                $('#js-current-treatment-buttons').show();
-                $('#js-current-treatment').show();
-            }
+        $(this).dialog('close');
+        }
+        }
+        });
+        });
+        }
 
-            const hideCurrentTreatment = () => {
-                $('#js-empty-current-treatment').show();
-                $('#js-current-treatment-buttons').hide();
-                $('#js-current-treatment .js-treatment-details-table').hide();
-                $('#js-current-treatment').hide();
-            }
+        const setStopCurrentTreatmentButtonOnClickListener = () => {
+        $('#js-stop-current-treatment').click(() => {
+        const currentTreatmentId = getCurrentTreatmentId();
+        const currentTreatment = $('#' + currentTreatmentId + '-js-treatment');
+        const currentTreatmentStopDate = getValue(currentTreatmentId + '-js-treatment-date-stopped.value');
+        console.log('currentTreatmentStopDate=' + currentTreatmentStopDate);
+        setValue(
+        currentTreatmentId + '-js-treatment-date-stopped.value',
+        getFormattedDate(currentTreatmentStopDate ? new Date(currentTreatmentStopDate) : new Date())
+        );
+        setValue(currentTreatmentId + '-js-is-current-treatment.value', IS_NOT_CURRENT_REGIMEN);
+        $('#' + currentTreatmentId + '-js-treatment').addClass(EXPANDABLE_SECTION_CLASS);
+        $('#' + currentTreatmentId + '-js-treatment-expandable-data').hide();
+        $('#' + currentTreatmentId + '-js-historical-treatment-buttons').show();
+        $('#' + currentTreatmentId + '-js-treatment-date-stopped-mandatory-asterisk').show();
+        $('#js-historical-treatments').prepend(currentTreatment.detach());
+        moveFirstEmptyTreatmentToCurrentTreatmentSection();
+        hideCurrentTreatment();
+        hideEmptyHistoricalTreatmentsMessage();
+        $('#js-stop-current-treatment').hide();
+        });
+        }
 
-            const setAddCurrentTreatmentButtonOnClickListener = () => {
-                $('#js-add-current-treatment').click(() => {
-                    showCurrentTreatment();
-                });
-            }
+        const setInterruptionButtonsOnClickListener = () => {
+        for (let i = 0; i &lt; MAX_TREATMENTS; i++) {
+        $('button#' + i + '-js-add-first-interruption').click(function() {
+        $('#' + i + '-0-js-interruption').show();
+        $('button#' + i + '-js-add-first-interruption').hide();
+        });
+        for (let j = 0; j &lt; MAX_TREATMENT_INTERRUPTIONS; j++) {
+        //add interruption button
+        $('button#' + i + '-' + j + '-js-add-interruption').click(function() {
+        const interruptionToAddId = j + 1;
 
-            const setDeleteCurrentTreatmentButtonOnClickListener = () => {
-                $('#js-delete-current-treatment').click(() => {
-                    $('#js-delete-treatment-confirmation-modal').dialog({
-                        resizable: false,
-                        draggable: false,
-                        width: 500,
-                        modal: true,
-                        title: "Delete Treatment?",
-                        buttons: {
-                            cancel: function() {
-                                $(this).dialog('close');
-                            },
-                            confirm: function() {
-                                hideCurrentTreatment();
-                                setValue(getCurrentTreatmentId() + '-js-is-current-treatment.value', IS_NOT_CURRENT_REGIMEN);
+        //show next interruption
+        $('#' + i + '-' + interruptionToAddId + '-js-interruption').show();
 
-                                //clear treatment data fields
-                                $('#js-current-treatment .js-treatment-data input:not(:button)').val([]);
-                                $('#js-current-treatment .js-treatment-data select').val(null);
+        //hide '+' and '-' buttons as it is no longer the last interruption
+        $('#' + i + '-' + j + '-js-add-interruption').hide();
+        $('#' + i + '-' + j + '-js-delete-interruption').hide(false);
+        });
+        //delete interruption button
+        $('button#' + i + '-' + j + '-js-delete-interruption').click(function() {
+        $('#' + i + '-' + j + '-js-interruption').hide();
+        $('#' + i + '-' + j + '-js-interruption input:not(:button)').val([]);
 
-                                //clear treatment interruptions fields
-                                $('#js-current-treatment .js-interruption').hide();
-                                $('#js-current-treatment .js-interruption input:not(:button)').val([]);
-                                $('#js-current-treatment button.js-add-interruption').show();
-                                $('#js-current-treatment button.js-delete-interruption').show();
+        //show '+' and '-' buttons for the previous row
+        const prevInterruptionId = j - 1;
+        if (prevInterruptionId &lt; 0) {
+        $('button#' + i + '-js-add-first-interruption').show();
+        } else {
+        $('#' + i + '-' + prevInterruptionId + '-js-add-interruption').show();
+        $('#' + i + '-' + prevInterruptionId + '-js-delete-interruption').show();
+        }
+        });
+        }
+        }
+        }
 
-                                $(this).dialog('close');
-                            }
-                        }
-                    });
-                });
-            }
+        const hideEmptyHistoricalTreatmentsMessage = () => {
+        $('#js-empty-historical-treatment').hide();
+        }
 
-            const setStopCurrentTreatmentButtonOnClickListener = () => {
-                $('#js-stop-current-treatment').click(() => {
-                    const currentTreatmentId = getCurrentTreatmentId();
-                    const currentTreatment = $('#' + currentTreatmentId + '-js-treatment');
-                    setValue(currentTreatmentId + '-js-treatment-date-stopped.value', getFormattedDate(new Date()));
-                    setValue(currentTreatmentId + '-js-is-current-treatment.value', IS_NOT_CURRENT_REGIMEN);
-                    $('#' + currentTreatmentId + '-js-treatment').addClass(EXPANDABLE_SECTION_CLASS);
-                    $('#' + currentTreatmentId + '-js-treatment-expandable-data').hide();
-                    $('#' + currentTreatmentId + '-js-historical-treatment-buttons').show();
-                    $('#' + currentTreatmentId + '-js-treatment-date-stopped-mandatory-asterisk').show();
-                    $('#js-historical-treatments').prepend(currentTreatment.detach());
-                    moveFirstEmptyTreatmentToCurrentTreatmentSection();
-                    hideCurrentTreatment();
-                    hideEmptyHistoricalTreatmentsMessage();
-                    $('#js-stop-current-treatment').hide();
-                });
-            }
+        const setAddHistoricalTreatmentButtonOnClickListener = () => {
+        $('button#js-add-historical-treatment').click(function() {
+        hideEmptyHistoricalTreatmentsMessage();
+        $('#js-historical-treatments .js-treatment:not(:visible)').first().show();
 
-            const setInterruptionButtonsOnClickListener = () => {
-                for (let i = 0; i &lt; MAX_TREATMENTS; i++) {
-                    $('button#' + i + '-js-add-first-interruption').click(function() {
-                        $('#' + i + '-0-js-interruption').show();
-                        $('button#' + i + '-js-add-first-interruption').hide();
-                    });
-                    for (let j = 0; j &lt; MAX_TREATMENT_INTERRUPTIONS; j++) {
-                        //add interruption button
-                        $('button#' + i + '-' + j + '-js-add-interruption').click(function() {
-                            const interruptionToAddId = j + 1;
+        //hide 'Add Historical Treatment' if all historical treatments are visible
+        if (!$('#js-historical-treatments .js-treatment:not(:visible)').length) {
+        $('button#js-add-historical-treatment').hide();
+        }
+        });
+        }
 
-                            //show next interruption
-                            $('#' + i + '-' + interruptionToAddId + '-js-interruption').show();
+        const setHistoricalTreatmentButtonsOnClickListener = () => {
+        for (let i = 0; i &lt; MAX_TREATMENTS; i++) {
+        $('button#' + i + '-js-delete-treatment').click(function() {
+        $('#js-delete-treatment-confirmation-modal').dialog({
+        resizable: false,
+        draggable: false,
+        width: 500,
+        modal: true,
+        title: "Delete Treatment?",
+        buttons: {
+        cancel: function() {
+        $(this).dialog('close');
+        },
+        confirm: function() {
+        $('#' + i + '-js-treatment-expandable-data').hide();
+        $('#' + i + '-js-expand-treatment-expandable-data').show();
+        $('#' + i + '-js-collapse-treatment-expandable-data').hide();
+        $('#' + i + '-js-treatment').hide();
 
-                            //hide '+' and '-' buttons as it is no longer the last interruption
-                            $('#' + i + '-' + j + '-js-add-interruption').hide();
-                            $('#' + i + '-' + j + '-js-delete-interruption').hide(false);
-                        });
-                        //delete interruption button
-                        $('button#' + i + '-' + j + '-js-delete-interruption').click(function() {
-                            $('#' + i + '-' + j + '-js-interruption').hide();
-                            $('#' + i + '-' + j + '-js-interruption input:not(:button)').val([]);
+        //clear treatment data fields
+        $('#' + i + '-js-treatment .js-treatment-data input:not(:button)').val([]);
+        $('#' + i + '-js-treatment .js-treatment-data select').val([]);
 
-                            //show '+' and '-' buttons for the previous row
-                            const prevInterruptionId = j - 1;
-                            if (prevInterruptionId &lt; 0) {
-                                $('button#' + i + '-js-add-first-interruption').show();
-                            } else {
-                                $('#' + i + '-' + prevInterruptionId + '-js-add-interruption').show();
-                                $('#' + i + '-' + prevInterruptionId + '-js-delete-interruption').show();
-                            }
-                        });
-                    }
-                }
-            }
+        //clear treatment interruptions fields
+        $('#' + i + '-js-treatment .js-interruption').hide();
+        $('#' + i + '-js-treatment .js-interruption input:not(:button)').val([]);
+        $('#' + i + '-js-treatment button.js-add-interruption').show();
+        $('#' + i + '-js-treatment button.js-delete-interruption').show();
 
-            const hideEmptyHistoricalTreatmentsMessage = () => {
-                $('#js-empty-historical-treatment').hide();
-            }
+        //show empty historical treatments section if there are no historical treatments are visible
+        if (!$('#js-historical-treatments .js-treatment:visible').length) {
+        $('#js-empty-historical-treatment').show();
+        }
 
-            const setAddHistoricalTreatmentButtonOnClickListener = () => {
-                $('button#js-add-historical-treatment').click(function() {
-                    hideEmptyHistoricalTreatmentsMessage();
-                    $('#js-historical-treatments .js-treatment:not(:visible)').first().show();
+        $(this).dialog('close');
+        }
+        }
+        })
+        });
+        $('button#' + i + '-js-toggle-historical-treatment').click(function() {
+        $('#' + i + '-js-treatment-expandable-data').toggle();
+        $('#' + i + '-js-expand-treatment-expandable-data').toggle();
+        $('#' + i + '-js-collapse-treatment-expandable-data').toggle();
+        });
+        }
+        }
 
-                    //hide 'Add Historical Treatment' if all historical treatments are visible 
-                    if (!$('#js-historical-treatments .js-treatment:not(:visible)').length) {
-                        $('button#js-add-historical-treatment').hide();
-                    }
-                });
-            }
+        const setExpandAllHistoricalTreatmentsButtonOnClickListener = () => {
+        $('button#js-expand-all-historical-treatments').click(function() {
+        $('#js-historical-treatments .js-treatment:visible .js-treatment-expandable-data').show();
+        $('#js-historical-treatments .js-treatment:visible .js-expand-treatment-expandable-data').hide();
+        $('#js-historical-treatments .js-treatment:visible .js-collapse-treatment-expandable-data').show();
+        })
+        }
 
-            const setHistoricalTreatmentButtonsOnClickListener = () => {
-                for (let i = 0; i &lt; MAX_TREATMENTS; i++) {
-                    $('button#' + i + '-js-delete-treatment').click(function() {
-                        $('#js-delete-treatment-confirmation-modal').dialog({
-                            resizable: false,
-                            draggable: false,
-                            width: 500,
-                            modal: true,
-                            title: "Delete Treatment?",
-                            buttons: {
-                                cancel: function() {
-                                    $(this).dialog('close');
-                                },
-                                confirm: function() {
-                                    $('#' + i + '-js-treatment-expandable-data').hide();
-                                    $('#' + i + '-js-expand-treatment-expandable-data').show();
-                                    $('#' + i + '-js-collapse-treatment-expandable-data').hide();
-                                    $('#' + i + '-js-treatment').hide();
+        const setReturnButtonOnClickListener = () => {
+        $('button#return').click(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        if (queryParams.has('patientId')) {
+        window.location.replace("/openmrs/coreapps/clinicianfacing/patient.page?patientId=" + queryParams.get('patientId'));
+        }
+        });
+        }
 
-                                    //clear treatment data fields
-                                    $('#' + i + '-js-treatment .js-treatment-data input:not(:button)').val([]);
-                                    $('#' + i + '-js-treatment .js-treatment-data select').val([]);
+        const setSaveButtonOnClickListener = () => {
+        $('button#save').click(() => {
+        $('#js-save-program-confirmation-modal').dialog({
+        resizable: false,
+        draggable: false,
+        width: 500,
+        modal: true,
+        title: "Save Treatment program?",
+        buttons: {
+        cancel: function() {
+        $(this).dialog('close');
+        },
+        confirm: function() {
+        $('#submit-form > input').click();
+        $(this).dialog('close');
+        }
+        }
+        });
+        });
+        }
 
-                                    //clear treatment interruptions fields
-                                    $('#' + i + '-js-treatment .js-interruption').hide();
-                                    $('#' + i + '-js-treatment .js-interruption input:not(:button)').val([]);
-                                    $('#' + i + '-js-treatment button.js-add-interruption').show();
-                                    $('#' + i + '-js-treatment button.js-delete-interruption').show();
+        const showFormContent = () => {
+        $('#form-content-spinner').hide();
+        $('#form-content').show();
+        }
 
-                                    //show empty historical treatments section if there are no historical treatments are visible
-                                    if (!$('#js-historical-treatments .js-treatment:visible').length) {
-                                        $('#js-empty-historical-treatment').show();
-                                    }
-
-                                    $(this).dialog('close');
-                                }
-                            }
-                        })
-                    });
-                    $('button#' + i + '-js-toggle-historical-treatment').click(function() {
-                        $('#' + i + '-js-treatment-expandable-data').toggle();
-                        $('#' + i + '-js-expand-treatment-expandable-data').toggle();
-                        $('#' + i + '-js-collapse-treatment-expandable-data').toggle();
-                    });
-                }
-            }
-
-            const setExpandAllHistoricalTreatmentsButtonOnClickListener = () => {
-                $('button#js-expand-all-historical-treatments').click(function() {
-                    $('#js-historical-treatments .js-treatment:visible .js-treatment-expandable-data').show();
-                    $('#js-historical-treatments .js-treatment:visible .js-expand-treatment-expandable-data').hide();
-                    $('#js-historical-treatments .js-treatment:visible .js-collapse-treatment-expandable-data').show();
-                })
-            }
-
-            const setReturnButtonOnClickListener = () => {
-                $('button#return').click(() => {
-                    const queryParams = new URLSearchParams(window.location.search);
-                    if (queryParams.has('patientId')) {
-                        window.location.replace("/openmrs/coreapps/clinicianfacing/patient.page?patientId=" + queryParams.get('patientId'));
-                    }
-                });
-            }
-
-            const setSaveButtonOnClickListener = () => {
-                $('button#save').click(() => {
-                    $('#js-save-program-confirmation-modal').dialog({
-                        resizable: false,
-                        draggable: false,
-                        width: 500,
-                        modal: true,
-                        title: "Save Treatment program?",
-                        buttons: {
-                            cancel: function() {
-                                $(this).dialog('close');
-                            },
-                            confirm: function() {
-                                $('#submit-form > input').click();
-                                $(this).dialog('close');
-                            }
-                        }
-                    });
-                });
-            }
-
-            const showFormContent = () => {
-                $('#form-content-spinner').hide();
-                $('#form-content').show();
-            }
-        
-            //executions
-            setSaveButtonOnClickListener();
-            setReturnButtonOnClickListener();
-            loadTreatments();
-            setAddCurrentTreatmentButtonOnClickListener();
-            setDeleteCurrentTreatmentButtonOnClickListener();
-            setStopCurrentTreatmentButtonOnClickListener();
-            setInterruptionButtonsOnClickListener();
-            setRegimenNameOnChangeListener();
-            setMandatoryFieldOnChangeListener("span[id$='-js-treatment-reason'] > select");
-            setMandatoryFieldOnChangeListener("span[id$='-js-treatment-date-started'] > input");
-            setTreatmentDateStoppedOnChangeListener();
-            setMandatoryFieldOnChangeListener("span[id$='-js-interruption-date'] > input");
-            setMandatoryFieldOnChangeListener("span[id$='-js-interruption-restart-date'] > input");
-            setAddHistoricalTreatmentButtonOnClickListener();
-            setHistoricalTreatmentButtonsOnClickListener();
-            setExpandAllHistoricalTreatmentsButtonOnClickListener();
-            showFormContent();
+        //executions
+        setSaveButtonOnClickListener();
+        setReturnButtonOnClickListener();
+        loadTreatments();
+        setAddCurrentTreatmentButtonOnClickListener();
+        setDeleteCurrentTreatmentButtonOnClickListener();
+        setStopCurrentTreatmentButtonOnClickListener();
+        setInterruptionButtonsOnClickListener();
+        setRegimenNameOnChangeListener();
+        setMandatoryFieldOnChangeListener("span[id$='-js-treatment-reason'] > select");
+        setMandatoryFieldOnChangeListener("span[id$='-js-treatment-date-started'] > input");
+        setTreatmentDateStoppedOnChangeListener();
+        setMandatoryFieldOnChangeListener("span[id$='-js-interruption-date'] > input");
+        setMandatoryFieldOnChangeListener("span[id$='-js-interruption-restart-date'] > input");
+        setAddHistoricalTreatmentButtonOnClickListener();
+        setHistoricalTreatmentButtonsOnClickListener();
+        setExpandAllHistoricalTreatmentsButtonOnClickListener();
+        showFormContent();
         });
     </script>
 
@@ -725,7 +703,8 @@
                                                 <span class="color-red">*</span>
                                             </span>
                                             <span id="{n}-js-regimen-name">
-                                                <regimen conceptId="c7e17ce8-d832-4349-a326-b20f5ae7f432" addNew="false" required="true"/>
+                                                <regimen conceptId="c7e17ce8-d832-4349-a326-b20f5ae7f432" addNew="false"
+                                                         required="true"/>
                                             </span>
                                         </div>
                                         <div>
@@ -1148,7 +1127,7 @@
                 <uimessage code="cfl.programForm.button.return"/>
             </button>
         </div>
-        <postSubmissionAction class="org.openmrs.module.cflcore.api.htmlformentry.action.RemoveEncounterAction"/>
+        <postSubmissionAction class="org.openmrs.module.cflcore.api.htmlformentry.action.OnProgramFormSaveAction"/>
         <redirectOnSave url="/coreapps/clinicianfacing/patient.page?patientId={{patient.id}}"/>
     </ifMode>
 </htmlform>

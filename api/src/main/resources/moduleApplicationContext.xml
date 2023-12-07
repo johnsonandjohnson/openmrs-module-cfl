@@ -22,12 +22,16 @@
           class="org.openmrs.module.cfl.api.activator.impl.CreateGlobalParametersActivatorStep"/>
     <bean id="cfl-FixRiskFactorForHIVConceptsActivatorStep"
           class="org.openmrs.module.cfl.api.activator.impl.FixRiskFactorForHIVConceptsActivatorStep"/>
+    <bean id="cfl-MigrateMetadataActivatorStep"
+          class="org.openmrs.module.cfl.api.activator.impl.MigrateMetadataActivatorStep"/>
     <bean id="cfl-InstallMetadataPackagesActivatorStep"
           class="org.openmrs.module.cfl.api.activator.impl.InstallMetadataPackagesActivatorStep"/>
     <bean id="cfl-ConfigurePatientDashboardAppsActivatorStep"
           class="org.openmrs.module.cfl.api.activator.impl.ConfigurePatientDashboardAppsActivatorStep"/>
     <bean id="cfl-InstallMetadataBundleActivatorStep"
           class="org.openmrs.module.cfl.api.activator.impl.InstallMetadataBundleActivatorStep"/>
+    <bean id="cfk-InstallMultiProjectAdviceActivatorStep"
+          class="org.openmrs.module.cfl.api.activator.impl.InstallMultiProjectAdviceActivatorStep"/>
     <!-- END ModuleActivatorStep -->
 
     <bean id="cflRolePrivilegeProfiles"
@@ -96,6 +100,22 @@
             <list merge="true">
                 <value>org.openmrs.module.cfl.api.service.CustomUserAppService</value>
                 <ref bean="cflCustomUserAppServiceImpl"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="clfMultiProjectDefaultPatientTemplateService"
+          class="org.openmrs.module.cfl.api.service.messages.impl.MultiProjectDefaultPatientTemplateServiceImpl" primary="true">
+        <property name="patientTemplateService" ref="messages.patientTemplateService" />
+        <property name="templateService" ref="messages.templateService" />
+        <property name="actorService" ref="messages.actorService" />
+        <property name="messageDetailsMapper" ref="messages.MessageDetailsMapper" />
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.messages.api.service.DefaultPatientTemplateService</value>
+                <ref bean="clfMultiProjectDefaultPatientTemplateService"/>
             </list>
         </property>
     </bean>

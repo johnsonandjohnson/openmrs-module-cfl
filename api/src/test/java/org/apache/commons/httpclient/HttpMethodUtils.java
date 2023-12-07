@@ -8,20 +8,17 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-package org.openmrs.module.cfl.api.metadata;
+package org.apache.commons.httpclient;
 
-import org.junit.Test;
+import java.io.InputStream;
 
-import static org.junit.Assert.assertEquals;
+/**
+ * Utility class to work around package access control.
+ */
+public class HttpMethodUtils {
+  private HttpMethodUtils() {}
 
-public class HtmlFormsMetadataTest {
-
-  @Test
-  public void shouldReturnProperVersion() {
-    HtmlFormsMetadata htmlFormsMetadata = new HtmlFormsMetadata();
-
-    int actual = htmlFormsMetadata.getVersion();
-
-    assertEquals(9, actual);
+  public static void setResponseStream(HttpMethodBase httpMethodBase, InputStream responseStream) {
+    httpMethodBase.setResponseStream(responseStream);
   }
 }
