@@ -123,11 +123,6 @@
 </script>
 
 <div id="content" class="container-fluid">
-    <div class="row">
-        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-            ${ui.includeFragment("cfl", "infoAndErrorMessages")}
-        </div>
-    </div>
 
     <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12">
@@ -158,6 +153,14 @@
                                 <% } else { %>
                                     <span>${ui.message("cfl.loginPage.title")}</span>
                                 <% } %>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                        <span class="error-message-text">
+                                            ${ui.includeFragment("cfl", "infoAndErrorMessages")}
+                                        </span>
+                                    </div>
                                 </div>
 
                                 <div id="main-content">
