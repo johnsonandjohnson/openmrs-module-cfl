@@ -116,6 +116,12 @@ form#login-form input.form-control-lg.credential-input {
     box-shadow: none;
 }
 
+.error-message-text {
+    text-align: center;
+    font-size: 24px;
+    color: red;
+}
+
 p {
     font-family: CircularStd-Book !important;
 }
