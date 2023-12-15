@@ -24,6 +24,24 @@ import static java.lang.Boolean.parseBoolean;
 import static org.openmrs.module.cfl.CfldistributionGlobalParameterConstants.SHOULD_DISABLE_APPS_AND_EXTENSIONS_KEY;
 import static org.openmrs.module.cfl.api.activator.impl.ModuleActivatorStepOrderEnum.CONFIGURE_PATIENT_DASHBOARD_APPS_ACTIVATOR_STEP;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ACTIVE_VISIT_STATUS_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_ENCOUNTERS_GROUP_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_LOCATION_GROUP_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_MANAGE_FLAGS_LINK_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_MANAGE_LOCATIONS_LINK_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_MANAGE_LOCATION_ATTRIBUTE_TYPES_LINK_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_MANAGE_LOCATION_TAGS_LINK_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_MANAGE_PATIENT_IDENTIFIER_TYPES_LINK_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_MANAGE_PROVIDER_ATTRIBUTE_TYPES_LINK_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_MANAGE_VISIT_ATTRIBUTE_TYPES_LINK_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_PATIENT_FLAGS_GROUP_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_PRIVILIGES_LINK_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_PROVIDERS_GROUP_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_ROLES_AND_PRIVILIGES_GROUP_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_ROLES_LINK_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_VISITS_GROUP_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_VISITS_LINK_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMIN_UI_ENCOUNTERS_LINK_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMIN_UI_ENCOUNTER_ROLES_LINK_EXT;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ALLERGYUI_PATIENT_DASHBOARD_EXT;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.APPOINTMENTSCHEDULINGUI_HOME_APP;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.APPOINTMENTSCHEDULINGUI_TAB_EXT;
@@ -46,6 +64,9 @@ import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.CORE
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.COREAPPS_RELATIONSHIPS_APP;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.LOCATIONBASEDACCESS_EXT;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.LOCATIONBASEDACCES_PATIENT_HEADER_LOCATION_EXT;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.OWA_CONCEPT_DICTIONARY_APP;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.OWA_CONCEPT_LAB_APP;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.OWA_METADATA_MAPPING_APP;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.PATIENTFLAGS_EXT;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.PATIENT_DASHBOARD_APPOINTMENTS_EXT;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.REGISTRATION_APP_EDIT_PATIENT_DASHBOARD_EXT;
@@ -72,7 +93,10 @@ public class ConfigurePatientDashboardAppsActivatorStep implements ModuleActivat
           COREAPPS_RELATIONSHIPS_APP,
           COREAPPS_MOST_RECENT_VITALS_APP,
           COREAPPS_ACTIVE_VISITS_APP,
-          COREAPPS_DATA_MANAGEMENT_APP);
+          COREAPPS_DATA_MANAGEMENT_APP,
+          OWA_CONCEPT_DICTIONARY_APP,
+          OWA_METADATA_MAPPING_APP,
+          OWA_CONCEPT_LAB_APP);
 
   private static final List<String> CFL_ADDITIONAL_MODIFICATION_APP_IDS =
       Arrays.asList(
@@ -96,7 +120,25 @@ public class ConfigurePatientDashboardAppsActivatorStep implements ModuleActivat
           ATTACHMENTS_OVERALL_ACTION_EXT,
           LOCATIONBASEDACCESS_EXT,
           COREAPPS_MARK_PATIENT_DECEASED_EXT,
-          LOCATIONBASEDACCES_PATIENT_HEADER_LOCATION_EXT);
+          LOCATIONBASEDACCES_PATIENT_HEADER_LOCATION_EXT,
+          ADMINUI_LOCATION_GROUP_EXT,
+          ADMINUI_MANAGE_LOCATIONS_LINK_EXT,
+          ADMINUI_MANAGE_LOCATION_TAGS_LINK_EXT,
+          ADMINUI_MANAGE_LOCATION_ATTRIBUTE_TYPES_LINK_EXT,
+          ADMINUI_ENCOUNTERS_GROUP_EXT,
+          ADMIN_UI_ENCOUNTERS_LINK_EXT,
+          ADMIN_UI_ENCOUNTER_ROLES_LINK_EXT,
+          ADMINUI_VISITS_GROUP_EXT,
+          ADMINUI_VISITS_LINK_EXT,
+          ADMINUI_MANAGE_VISIT_ATTRIBUTE_TYPES_LINK_EXT,
+          ADMINUI_ROLES_AND_PRIVILIGES_GROUP_EXT,
+          ADMINUI_ROLES_LINK_EXT,
+          ADMINUI_PRIVILIGES_LINK_EXT,
+          ADMINUI_PROVIDERS_GROUP_EXT,
+          ADMINUI_MANAGE_PROVIDER_ATTRIBUTE_TYPES_LINK_EXT,
+          ADMINUI_PATIENT_FLAGS_GROUP_EXT,
+          ADMINUI_MANAGE_FLAGS_LINK_EXT,
+          ADMINUI_MANAGE_PATIENT_IDENTIFIER_TYPES_LINK_EXT);
 
   private static final List<String> DISABLE_EXTENSIONS_IDS =
       Collections.singletonList(REGISTRATION_APP_EDIT_PATIENT_DASHBOARD_EXT);

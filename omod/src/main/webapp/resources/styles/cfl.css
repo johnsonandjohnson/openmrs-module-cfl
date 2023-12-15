@@ -43,6 +43,8 @@ body {
     width: auto;
     margin-top: 0;
     font-family: 'CircularStd', serif;
+    font-variant: normal;
+    font-feature-settings: normal;
 }
 
 header {

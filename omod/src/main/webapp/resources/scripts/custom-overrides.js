@@ -21,7 +21,8 @@
        'allergies.manageAllergies.subtitle',
        'cfl.emptyDashboardWidget.label',
        'coreapps.clinicianfacing.overallActions',
-       'adminui.myAccount'
+       'adminui.myAccount',
+       'visits.manageVisitsBreadcrumb'
      ], () => applyCustomChanges());
   });
 
@@ -30,6 +31,7 @@
     translateMyAccountLabelInTopHeaderSection();
     addTitleOnHomeAndSystemAdministrationPages();
     redesignAllergyUI();
+    changeAllergyPagesNameBreadcrumb();
     setHomeBreadCrumbOnPatientDashboard();
     removeOccasionalUndefinedBreadCrumbs();
     moveAllWidgetsToFirstColumn();
@@ -37,6 +39,7 @@
     replaceURLsOnManageLocationsPage();
     overrideUserAccountLinks();
     redirectToCorrectFindPatientPage();
+    updateBreadcrumbsInHtmlForms();
   }
 
   function addBreadCrumbOnHomePage() {
@@ -89,15 +92,30 @@
      }
   }
 
+  function changeAllergyPagesNameBreadcrumb() {
+    if ((new URL(window.location.href).pathname.includes("/allergyui"))) {
+      const homeBreadcrumbElement = jq('#breadcrumbs li:first-child:not(:empty)');
+      const nameBreadcrumbElement = homeBreadcrumbElement.next();
+      const nameBreadcrumbText = nameBreadcrumbElement.text().trim();
+      const newBreadcrumbText = nameBreadcrumbText.split(', ').reverse().join(' ');
+      const anchorUrl = nameBreadcrumbElement.find('a').attr('href');
+      const newAnchor = jq('<a>', {
+        href: anchorUrl,
+        text: newBreadcrumbText
+      });
+
+      nameBreadcrumbElement.find('a').replaceWith(newAnchor);
+    }
+  }
+
   function setHomeBreadCrumbOnPatientDashboard() {
-    let firstBreadcrumb = jq('#breadcrumbs li:first-child');
-    var link = jq('<a>', {
+    const firstBreadcrumbElement = jq('#breadcrumbs li:first');
+    const homeBreadcrumbElement = jq('<a>', {
         href: '/openmrs',
-        text: emr.message('cfl.home.title') + ' >>'
+        text: emr.message('cfl.home.title')
     });
 
-    firstBreadcrumb.after(link);
-    firstBreadcrumb.remove();
+    homeBreadcrumbElement.insertBefore(firstBreadcrumbElement);
   }
 
   // OpenMRS bug: remove occasional (/undefined) from the System Administration breadcrumbs
@@ -207,6 +225,36 @@
     if (url.endsWith('app=coreapps.findPatient')) {
       window.location.href = '/openmrs/owa/cfl/index.html#/find-patient'
     }
+  }
+
+  function updateBreadcrumbsInHtmlForms() {
+    if (new URL(window.location.href).pathname.includes("/htmlformentryui/htmlform")) {
+      const patientUuid = getPatientUuidParamFromURL();
+      setNameBreadcrumbUrl(patientUuid);
+      addManageVisitsBreadcrumb(patientUuid);
+    }
+  }
+
+  function setNameBreadcrumbUrl(patientUuid) {
+    const nameBreadcrumbElement = jq('#breadcrumbs li:nth-child(3)');
+    nameBreadcrumbElement.find('a').attr('href', '/openmrs/coreapps/clinicianfacing/patient.page?patientId=' + patientUuid);
+  }
+
+  function addManageVisitsBreadcrumb(patientUuid) {
+    const lastBreadcrumbElement = jq('#breadcrumbs li:last');
+    const manageVisitBreadcrumbElement = jq('<li>').append(
+      jq('<a>', {
+        href: '/openmrs/owa/visits/index.html#/visits/manage/' + patientUuid,
+        text: emr.message('visits.manageVisitsBreadcrumb') + ' '
+      })
+    );
+
+    manageVisitBreadcrumbElement.insertBefore(lastBreadcrumbElement);
+  }
+
+  function getPatientUuidParamFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('patientId');
   }
 
   function htmlToElements(htmlString) {
