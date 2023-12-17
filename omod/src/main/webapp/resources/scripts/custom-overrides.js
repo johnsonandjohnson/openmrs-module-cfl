@@ -31,7 +31,6 @@
     translateMyAccountLabelInTopHeaderSection();
     addTitleOnHomeAndSystemAdministrationPages();
     redesignAllergyUI();
-    changeAllergyPagesNameBreadcrumb();
     setHomeBreadCrumbOnPatientDashboard();
     removeOccasionalUndefinedBreadCrumbs();
     moveAllWidgetsToFirstColumn();
@@ -90,22 +89,6 @@
       ];
       allergies.replaceWith(...htmlToElements(htmlLines.join('\n')));
      }
-  }
-
-  function changeAllergyPagesNameBreadcrumb() {
-    if ((new URL(window.location.href).pathname.includes("/allergyui"))) {
-      const homeBreadcrumbElement = jq('#breadcrumbs li:first-child:not(:empty)');
-      const nameBreadcrumbElement = homeBreadcrumbElement.next();
-      const nameBreadcrumbText = nameBreadcrumbElement.text().trim();
-      const newBreadcrumbText = nameBreadcrumbText.split(', ').reverse().join(' ');
-      const anchorUrl = nameBreadcrumbElement.find('a').attr('href');
-      const newAnchor = jq('<a>', {
-        href: anchorUrl,
-        text: newBreadcrumbText
-      });
-
-      nameBreadcrumbElement.find('a').replaceWith(newAnchor);
-    }
   }
 
   function setHomeBreadCrumbOnPatientDashboard() {
@@ -230,8 +213,10 @@
   function updateBreadcrumbsInHtmlForms() {
     if (new URL(window.location.href).pathname.includes("/htmlformentryui/htmlform")) {
       const patientUuid = getPatientUuidParamFromURL();
-      setNameBreadcrumbUrl(patientUuid);
-      addManageVisitsBreadcrumb(patientUuid);
+      if (isUUID(patientUuid)) {
+        setNameBreadcrumbUrl(patientUuid);
+        addManageVisitsBreadcrumb(patientUuid);
+      }
     }
   }
 
@@ -257,12 +242,27 @@
     return urlParams.get('patientId');
   }
 
+  function isUUID(string) {
+    const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+
+    return uuidRegex.test(string);
+  }
+
   function htmlToElements(htmlString) {
     var template = document.createElement('template');
     template.innerHTML = htmlString;
     return template.content.childNodes;
   }
 
+  /**
+   * Waits for an element satisfying selector to exist, then resolves promise with the element.
+   * Useful for resolving race conditions.
+   *
+   * @param selector
+   * @param parentElement
+   * @param notEmpty
+   * @returns {Promise}
+   */
   function elementReady(selector, parentElement = document, notEmpty = false) {
     return new Promise((resolve, reject) => {
       let el = parentElement.querySelector(selector);
