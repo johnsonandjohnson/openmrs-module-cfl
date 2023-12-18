@@ -118,8 +118,8 @@ form#login-form input.form-control-lg.credential-input {
 
 .error-message-text {
     text-align: center;
-    font-size: 24px;
-    color: red;
+    font-size: 20px;
+    color: #cc0000;
 }
 
 p {
