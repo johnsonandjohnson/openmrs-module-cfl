@@ -9,7 +9,7 @@
 
     <groupId>org.openmrs.module</groupId>
     <artifactId>cfl</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
+    <version>1.5.1-leprosy-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>CFL Config Module</name>
     <description>The module contains metadata and various customizations distinct for the CFL Distribution.</description>
