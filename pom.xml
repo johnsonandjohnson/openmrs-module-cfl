@@ -9,7 +9,7 @@
 
     <groupId>org.openmrs.module</groupId>
     <artifactId>cfl</artifactId>
-    <version>1.4.1-leprosy-SNAPSHOT</version>
+    <version>1.5.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>CFL Config Module</name>
     <description>The module contains metadata and various customizations distinct for the CFL Distribution.</description>
@@ -57,16 +57,16 @@
         <adminuiVersion>1.3.0</adminuiVersion>
         <jacocoVersion>0.8.2</jacocoVersion>
         <surefireVersion>2.17</surefireVersion>
-        <springWebVresion>4.1.4.RELEASE</springWebVresion>
+        <httpClientVersion>3.1.0</httpClientVersion>
         <guavaVersion>20.0</guavaVersion>
         <!-- Upgraded version compared to referenceapplication -->
         <appframeworkVersion>2.15.0</appframeworkVersion>
         <locationbasedaccessVersion>0.2.0</locationbasedaccessVersion>
         <!-- CfL modules -->
-        <cflCoreVersion>1.11.2-SNAPSHOT</cflCoreVersion>
+        <cflCoreVersion>1.12.0</cflCoreVersion>
         <messagesVersion>1.5.7</messagesVersion>
-        <multiProjectVersion>1.0.0-SNAPSHOT</multiProjectVersion>
-        <visitsVersion>1.5.1-SNAPSHOT</visitsVersion>
+        <multiProjectVersion>1.0.0</multiProjectVersion>
+        <visitsVersion>1.6.0</visitsVersion>
     </properties>
 
     <dependencyManagement>
@@ -334,10 +334,15 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-web</artifactId>
-                <version>${springWebVresion}</version>
-                <scope>provided</scope>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>com.springsource.org.apache.commons.httpclient</artifactId>
+                <version>${httpClientVersion}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.commons</groupId>
+                        <artifactId>com.springsource.org.apache.commons.codec</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>

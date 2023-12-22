@@ -21,7 +21,8 @@
        'allergies.manageAllergies.subtitle',
        'cfl.emptyDashboardWidget.label',
        'coreapps.clinicianfacing.overallActions',
-       'adminui.myAccount'
+       'adminui.myAccount',
+       'visits.manageVisitsBreadcrumb'
      ], () => applyCustomChanges());
   });
 
@@ -37,6 +38,7 @@
     replaceURLsOnManageLocationsPage();
     overrideUserAccountLinks();
     redirectToCorrectFindPatientPage();
+    updateBreadcrumbsInHtmlForms();
   }
 
   function addBreadCrumbOnHomePage() {
@@ -90,7 +92,13 @@
   }
 
   function setHomeBreadCrumbOnPatientDashboard() {
-    jq('#breadcrumbs li:first-child a').after(emr.message('cfl.home.title'));
+    const firstBreadcrumbElement = jq('#breadcrumbs li:first');
+    const homeBreadcrumbElement = jq('<a>', {
+        href: '/openmrs',
+        text: emr.message('cfl.home.title')
+    });
+
+    homeBreadcrumbElement.insertBefore(firstBreadcrumbElement);
   }
 
   // OpenMRS bug: remove occasional (/undefined) from the System Administration breadcrumbs
@@ -202,12 +210,59 @@
     }
   }
 
+  function updateBreadcrumbsInHtmlForms() {
+    if (new URL(window.location.href).pathname.includes("/htmlformentryui/htmlform")) {
+      const patientUuid = getPatientUuidParamFromURL();
+      if (isUUID(patientUuid)) {
+        setNameBreadcrumbUrl(patientUuid);
+        addManageVisitsBreadcrumb(patientUuid);
+      }
+    }
+  }
+
+  function setNameBreadcrumbUrl(patientUuid) {
+    const nameBreadcrumbElement = jq('#breadcrumbs li:nth-child(3)');
+    nameBreadcrumbElement.find('a').attr('href', '/openmrs/coreapps/clinicianfacing/patient.page?patientId=' + patientUuid);
+  }
+
+  function addManageVisitsBreadcrumb(patientUuid) {
+    const lastBreadcrumbElement = jq('#breadcrumbs li:last');
+    const manageVisitBreadcrumbElement = jq('<li>').append(
+      jq('<a>', {
+        href: '/openmrs/owa/visits/index.html#/visits/manage/' + patientUuid,
+        text: emr.message('visits.manageVisitsBreadcrumb') + ' '
+      })
+    );
+
+    manageVisitBreadcrumbElement.insertBefore(lastBreadcrumbElement);
+  }
+
+  function getPatientUuidParamFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('patientId');
+  }
+
+  function isUUID(string) {
+    const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+
+    return uuidRegex.test(string);
+  }
+
   function htmlToElements(htmlString) {
     var template = document.createElement('template');
     template.innerHTML = htmlString;
     return template.content.childNodes;
   }
 
+  /**
+   * Waits for an element satisfying selector to exist, then resolves promise with the element.
+   * Useful for resolving race conditions.
+   *
+   * @param selector
+   * @param parentElement
+   * @param notEmpty
+   * @returns {Promise}
+   */
   function elementReady(selector, parentElement = document, notEmpty = false) {
     return new Promise((resolve, reject) => {
       let el = parentElement.querySelector(selector);

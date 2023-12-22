@@ -65,5 +65,8 @@ public class CreateGlobalParametersActivatorStep implements ModuleActivatorStep 
         CfldistributionGlobalParameterConstants.CONDITIONS_LIST_NON_CODED_UUID_KEY,
         CfldistributionGlobalParameterConstants.GENERIC_OTHER_NON_CODED_CONCEPT_UUID,
         CfldistributionGlobalParameterConstants.CONDITIONS_LIST_NON_CODED_UUID_DESC);
+    createGlobalSettingIfNotExists(CfldistributionGlobalParameterConstants.HTML_FORM_DATE_FORMAT_KEY,
+        CfldistributionGlobalParameterConstants.DEFAULT_CFL_HTML_FORM_DATE_FORMAT,
+        CfldistributionGlobalParameterConstants.HTML_FORM_DATE_FORMAT_DESC);
   }
 }

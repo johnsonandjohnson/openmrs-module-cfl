@@ -33,6 +33,7 @@ import org.openmrs.module.messages.domain.PagingInfo;
 import org.openmrs.module.messages.domain.criteria.BaseCriteria;
 import org.openmrs.module.multiproject.aop.GlobalPropertyWithUserContextAdvice;
 import org.openmrs.module.multiproject.aop.GlobalPropertyWithoutUserContextAdvice;
+import org.openmrs.module.multiproject.aop.MultiProjectAroundAdvisor;
 import org.openmrs.module.multiproject.aop.ProjectBasedFilterAfterAdvice;
 import org.openmrs.module.multiproject.api.service.NameAndProjectSlugSuffixGetter;
 import org.openmrs.module.multiproject.filter.NameSuffixProjectBasedFilter;
@@ -158,5 +159,9 @@ public class InstallMultiProjectAdviceActivatorStep implements ModuleActivatorSt
         CustomAdministrationService.class,
         new GlobalPropertyWithoutUserContextAdvice(
             GLOBAL_PROPERTIES_SUPPORTING_MULTI_PROJECT_WITHOUT_USER_CONTEXT));
+
+    Context.addAdvisor(
+        AppFrameworkService.class,
+        new MultiProjectAroundAdvisor(AppFrameworkService.class.getMethod("getApp", String.class)));
   }
 }
