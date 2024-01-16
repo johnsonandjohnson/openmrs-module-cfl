@@ -64,6 +64,6 @@ public class ConfigurePatientDashboardAppsActivatorStepTest {
 
     verify(appFrameworkService, times(3)).enableApp(anyString());
     verify(appFrameworkService, times(14)).disableApp(anyString());
-    verify(appFrameworkService, times(33)).disableExtension(anyString());
+    verify(appFrameworkService, times(31)).disableExtension(anyString());
   }
 }
