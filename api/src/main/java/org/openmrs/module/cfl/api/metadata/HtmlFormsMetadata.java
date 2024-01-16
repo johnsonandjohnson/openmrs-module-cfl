@@ -25,7 +25,7 @@ public class HtmlFormsMetadata extends VersionedMetadataBundle {
 
   @Override
   public int getVersion() {
-    return 9;
+    return 10;
   }
 
   @Override
