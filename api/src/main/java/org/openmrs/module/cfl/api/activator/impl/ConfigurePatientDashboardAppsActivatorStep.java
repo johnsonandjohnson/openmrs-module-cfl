@@ -25,9 +25,7 @@ import static org.openmrs.module.cfl.CfldistributionGlobalParameterConstants.SHO
 import static org.openmrs.module.cfl.api.activator.impl.ModuleActivatorStepOrderEnum.CONFIGURE_PATIENT_DASHBOARD_APPS_ACTIVATOR_STEP;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ACTIVE_VISIT_STATUS_EXT;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_ENCOUNTERS_GROUP_EXT;
-import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_LOCATION_GROUP_EXT;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_MANAGE_FLAGS_LINK_EXT;
-import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_MANAGE_LOCATIONS_LINK_EXT;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_MANAGE_LOCATION_ATTRIBUTE_TYPES_LINK_EXT;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_MANAGE_LOCATION_TAGS_LINK_EXT;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.ADMINUI_MANAGE_PATIENT_IDENTIFIER_TYPES_LINK_EXT;
@@ -121,8 +119,6 @@ public class ConfigurePatientDashboardAppsActivatorStep implements ModuleActivat
           LOCATIONBASEDACCESS_EXT,
           COREAPPS_MARK_PATIENT_DECEASED_EXT,
           LOCATIONBASEDACCES_PATIENT_HEADER_LOCATION_EXT,
-          ADMINUI_LOCATION_GROUP_EXT,
-          ADMINUI_MANAGE_LOCATIONS_LINK_EXT,
           ADMINUI_MANAGE_LOCATION_TAGS_LINK_EXT,
           ADMINUI_MANAGE_LOCATION_ATTRIBUTE_TYPES_LINK_EXT,
           ADMINUI_ENCOUNTERS_GROUP_EXT,
