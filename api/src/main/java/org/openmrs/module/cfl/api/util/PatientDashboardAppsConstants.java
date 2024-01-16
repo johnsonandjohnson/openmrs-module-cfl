@@ -86,10 +86,6 @@ public final class PatientDashboardAppsConstants {
   public static final String LOCATIONBASEDACCES_PATIENT_HEADER_LOCATION_EXT =
       "org.openmrs.module.locationbasedaccess.patientHeader.secondLineFragments.patientLocation";
 
-  public static final String ADMINUI_LOCATION_GROUP_EXT =
-      "org.openmrs.module.adminui.locations.group";
-  public static final String ADMINUI_MANAGE_LOCATIONS_LINK_EXT =
-      "org.openmrs.module.adminui.manageLocations.link";
   public static final String ADMINUI_MANAGE_LOCATION_TAGS_LINK_EXT =
       "org.openmrs.module.adminui.manageLocationTags.link";
   public static final String ADMINUI_MANAGE_LOCATION_ATTRIBUTE_TYPES_LINK_EXT =
