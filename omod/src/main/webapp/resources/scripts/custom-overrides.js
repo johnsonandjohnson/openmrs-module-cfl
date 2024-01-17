@@ -39,6 +39,7 @@
     overrideUserAccountLinks();
     redirectToCorrectFindPatientPage();
     updateBreadcrumbsInHtmlForms();
+    customizeForLeprosy();
   }
 
   function addBreadCrumbOnHomePage() {
@@ -235,6 +236,20 @@
     );
 
     manageVisitBreadcrumbElement.insertBefore(lastBreadcrumbElement);
+  }
+
+  function customizeForLeprosy() {
+    //replaces Patient label in Messages widget on patient dashboard with Portuguese translation
+    jqr('.time-label').text('Participante');
+
+    //overrides 'Paciente' occurrences with 'Participante' in delete patient dialog
+    const originalHeaderText = jqr('#delete-patient-creation-dialog .dialog-header h3').text();
+    const changedHeaderText = originalHeaderText.replace('Paciente', 'Participante');
+    jqr('#delete-patient-creation-dialog .dialog-header h3').text(changedHeaderText);
+
+    const originalBodyText = jqr('#delete-patient-creation-dialog .dialog-content p').text();
+    const changedBodyText = originalBodyText.replace('paciente', 'participante');
+    jqr('#delete-patient-creation-dialog .dialog-content p').text(changedBodyText);
   }
 
   function getPatientUuidParamFromURL() {
