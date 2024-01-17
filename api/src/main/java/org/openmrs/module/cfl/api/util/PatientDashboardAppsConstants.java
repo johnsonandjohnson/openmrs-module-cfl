@@ -119,5 +119,7 @@ public final class PatientDashboardAppsConstants {
   public static final String OWA_METADATA_MAPPING_APP = "owa.metadatamapping";
   public static final String OWA_CONCEPT_LAB_APP = "owa.openconceptlab";
 
+  public static final String COREAPPS_DELETE_PATIENT_LINK_EXT = "org.openmrs.module.coreapps.deletePatient";
+
   private PatientDashboardAppsConstants() {}
 }

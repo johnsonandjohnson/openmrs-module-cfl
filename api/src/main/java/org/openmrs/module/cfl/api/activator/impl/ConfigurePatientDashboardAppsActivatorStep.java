@@ -53,6 +53,7 @@ import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.CORE
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.COREAPPS_CREATE_RETROSPECTIVE_VISIT_EXT;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.COREAPPS_CREATE_VISIT_EXT;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.COREAPPS_DATA_MANAGEMENT_APP;
+import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.COREAPPS_DELETE_PATIENT_LINK_EXT;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.COREAPPS_LATEST_OBS_FOR_CONCEPT_LIST_APP;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.COREAPPS_MARK_PATIENT_DECEASED_EXT;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.COREAPPS_MERGE_VISITS_EXT;
@@ -134,7 +135,8 @@ public class ConfigurePatientDashboardAppsActivatorStep implements ModuleActivat
           ADMINUI_MANAGE_PROVIDER_ATTRIBUTE_TYPES_LINK_EXT,
           ADMINUI_PATIENT_FLAGS_GROUP_EXT,
           ADMINUI_MANAGE_FLAGS_LINK_EXT,
-          ADMINUI_MANAGE_PATIENT_IDENTIFIER_TYPES_LINK_EXT);
+          ADMINUI_MANAGE_PATIENT_IDENTIFIER_TYPES_LINK_EXT,
+          COREAPPS_DELETE_PATIENT_LINK_EXT);
 
   private static final List<String> DISABLE_EXTENSIONS_IDS =
       Collections.singletonList(REGISTRATION_APP_EDIT_PATIENT_DASHBOARD_EXT);
