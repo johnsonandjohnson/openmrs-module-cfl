@@ -84,8 +84,8 @@
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>21_OpenMRS_Base_Config_App</filenameBase>
-            <groupUuid>1b55cb93-c6a5-4791-a276-9e63761af74b</groupUuid>
-            <version>2</version>
+            <groupUuid>bd5f04fa-ab77-4b72-a004-7c3ba0abb464</groupUuid>
+            <version>3</version>
             <importMode>MIRROR</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
