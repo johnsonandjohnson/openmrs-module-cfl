@@ -39,6 +39,7 @@
     overrideUserAccountLinks();
     redirectToCorrectFindPatientPage();
     updateBreadcrumbsInHtmlForms();
+    addSystemAdministrationBreadcrumbOnMissingPages();
   }
 
   function addBreadCrumbOnHomePage() {
@@ -235,6 +236,22 @@
     );
 
     manageVisitBreadcrumbElement.insertBefore(lastBreadcrumbElement);
+  }
+
+  function addSystemAdministrationBreadcrumbOnMissingPages() {
+    if (window.location.href.includes('adminui/metadata/locations/manageLocations.page') ||
+        window.location.href.includes('adminui/metadata/configureMetadata.page')) {
+      
+      const homeBreadcrumb = jq('#breadcrumbs li:first');
+      const systemAdministrationBreadcrumb = jq('<li>').append(
+        jq('<a>', {
+          href: '/openmrs/coreapps/systemadministration/systemAdministration.page',
+          text: emr.message('coreapps.app.system.administration.label')
+        })
+      );
+
+      homeBreadcrumb.after(systemAdministrationBreadcrumb);
+    }
   }
 
   function getPatientUuidParamFromURL() {
