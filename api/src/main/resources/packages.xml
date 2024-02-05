@@ -115,8 +115,8 @@
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>24_CFL_Charts_Apps</filenameBase>
-            <groupUuid>98db1cc1-c09e-4082-8eb2-2e2793c238b8</groupUuid>
-            <version>2</version>
+            <groupUuid>df83c4cc-d216-4466-b030-de479c0dca6f</groupUuid>
+            <version>3</version>
             <importMode>MIRROR</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
