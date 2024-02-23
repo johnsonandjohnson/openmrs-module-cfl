@@ -119,11 +119,5 @@
             <version>3</version>
             <importMode>MIRROR</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
-        <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
-            <filenameBase>25_Patient_Flags_Overview_Apps</filenameBase>
-            <groupUuid>e51be036-2d82-4c5d-8a59-4cabdeeed2c4</groupUuid>
-            <version>1</version>
-            <importMode>MIRROR</importMode>
-        </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
     </packages>
 </org.openmrs.module.emrapi.metadata.MetadataPackagesConfig>
