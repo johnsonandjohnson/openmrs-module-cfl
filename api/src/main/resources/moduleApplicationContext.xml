@@ -32,6 +32,8 @@
           class="org.openmrs.module.cfl.api.activator.impl.InstallMetadataBundleActivatorStep"/>
     <bean id="cfk-InstallMultiProjectAdviceActivatorStep"
           class="org.openmrs.module.cfl.api.activator.impl.InstallMultiProjectAdviceActivatorStep"/>
+    <bean id="cfl-MigrateUnnecessaryRoles"
+          class="org.openmrs.module.cfl.migration.MigrateUnnecessaryRoles"/>
     <!-- END ModuleActivatorStep -->
 
     <bean id="cflRolePrivilegeProfiles"
@@ -58,16 +60,16 @@
           class="org.openmrs.module.cfl.api.metadata.views.DbViewsMetadata">
         <constructor-arg ref="dbSessionFactory"/>
     </bean>
-    <bean id="cflSuperAdminRoleMetadata"
-          class="org.openmrs.module.cfl.api.metadata.SuperAdminRoleMetadata">
-        <property name="userService" ref="userService"/>
-    </bean>
-    <bean id="cflDoctorUserMetadata" class="org.openmrs.module.cfl.api.metadata.DoctorUserMetadata">
+    <bean id="abstractUserMetadata" class="org.openmrs.module.cfl.api.metadata.AbstractUserMetadata" abstract="true">
         <property name="userService" ref="userService"/>
         <property name="personService" ref="personService"/>
         <property name="locationService" ref="locationService"/>
         <property name="providerService" ref="providerService"/>
     </bean>
+    <bean id="cflDoctorUserMetadata" class="org.openmrs.module.cfl.api.metadata.DoctorUserMetadata"
+          parent="abstractUserMetadata"/>
+    <bean id="cflAnalystUserMetadata" class="org.openmrs.module.cfl.api.metadata.AnalystUserMetadata"
+          parent="abstractUserMetadata"/>
     <bean id="cflCaptchaService" class="org.openmrs.module.cfl.api.service.impl.CaptchaServiceImpl">
         <property name="reCaptchaAttemptService">
             <bean class="org.openmrs.module.cfl.api.service.impl.ReCaptchaAttemptService" />

@@ -13,6 +13,7 @@ package org.openmrs.module.cfl.api.activator.impl;
 import org.apache.commons.logging.Log;
 import org.openmrs.module.cfl.api.activator.ModuleActivatorStep;
 import org.openmrs.module.cfl.migration.MigrateProjectLocationAttribute;
+import org.openmrs.module.cfl.migration.MigrateUnnecessaryRoles;
 
 /** Automatically migrates Metadata. */
 public class MigrateMetadataActivatorStep implements ModuleActivatorStep {
@@ -25,5 +26,6 @@ public class MigrateMetadataActivatorStep implements ModuleActivatorStep {
   @Override
   public void startup(Log log) {
     new MigrateProjectLocationAttribute().doMigration();
+    new MigrateUnnecessaryRoles().doMigration();
   }
 }

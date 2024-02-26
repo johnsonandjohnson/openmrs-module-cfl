@@ -17,18 +17,32 @@ package org.openmrs.module.cfl.api.activator.impl;
  * steps execution.
  */
 public enum ModuleActivatorStepOrderEnum {
-  /** @see CreateGlobalParametersActivatorStep */
+  /**
+   * @see CreateGlobalParametersActivatorStep
+   */
   CREATE_GLOBAL_PARAMETERS_ACTIVATOR_STEP,
-  /** @see FixRiskFactorForHIVConceptsActivatorStep */
+  /**
+   * @see FixRiskFactorForHIVConceptsActivatorStep
+   */
   FIX_RISK_FACTOR_FOR_HIV_CONCEPTS_ACTIVATOR_STEP,
-  /** @see MigrateMetadataActivatorStep */
+  /**
+   * @see MigrateMetadataActivatorStep
+   */
   MIGRATE_METADATA,
-  /** @see InstallMetadataPackagesActivatorStep */
+  /**
+   * @see InstallMetadataPackagesActivatorStep
+   */
   INSTALL_METADATA_PACKAGES_ACTIVATOR_STEP,
-  /** @see ConfigurePatientDashboardAppsActivatorStep */
+  /**
+   * @see ConfigurePatientDashboardAppsActivatorStep
+   */
   CONFIGURE_PATIENT_DASHBOARD_APPS_ACTIVATOR_STEP,
-  /** @see InstallMetadataBundleActivatorStep */
+  /**
+   * @see InstallMetadataBundleActivatorStep
+   */
   INSTALL_METADATA_BUNDLE_ACTIVATOR_STEP,
-  /** @see InstallMultiProjectAdviceActivatorStep */
+  /**
+   * @see InstallMultiProjectAdviceActivatorStep
+   */
   INSTALL_MULTI_PROJECT_ADVICE_ACTIVATOR_STEP
 }

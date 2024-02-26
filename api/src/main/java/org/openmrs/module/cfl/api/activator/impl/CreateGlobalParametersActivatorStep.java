@@ -68,5 +68,8 @@ public class CreateGlobalParametersActivatorStep implements ModuleActivatorStep 
     createGlobalSettingIfNotExists(CfldistributionGlobalParameterConstants.HTML_FORM_DATE_FORMAT_KEY,
         CfldistributionGlobalParameterConstants.DEFAULT_CFL_HTML_FORM_DATE_FORMAT,
         CfldistributionGlobalParameterConstants.HTML_FORM_DATE_FORMAT_DESC);
+    createGlobalSettingIfNotExists(CfldistributionGlobalParameterConstants.ROLE_UUIDS_EXCLUDED_FROM_UI_KEY,
+        CfldistributionGlobalParameterConstants.ROLE_UUIDS_EXCLUDED_FROM_UI_DEFAULT_VALUE,
+        CfldistributionGlobalParameterConstants.ROLE_UUIDS_EXCLUDED_FROM_UI_DESC);
   }
 }

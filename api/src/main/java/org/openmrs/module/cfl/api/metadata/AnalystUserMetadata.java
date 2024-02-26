@@ -12,16 +12,15 @@ package org.openmrs.module.cfl.api.metadata;
 
 import org.openmrs.Person;
 
-public class DoctorUserMetadata extends AbstractUserMetadata {
+public class AnalystUserMetadata extends AbstractUserMetadata {
 
   private static final String GIVEN_NAME = "CfL";
-  private static final String FAMILY_NAME = "Doctor";
-  private static final String OTHER_GENDER = "O";
+  private static final String FAMILY_NAME = "Analyst";
   private static final String EMAIL_VALUE = "cfl@cfl.xyz";
-  private static final String PHONE_NUMBER_VALUE = "+15555551234";
-  private static final String USERNAME = "cfldoctor1";
-  private static final String PASSWORD = "Cfldoctor1";
-  private static final String DOCTOR_ROLE = "Privilege Level: Doctor";
+  private static final String PHONE_NUMBER_VALUE = "+15555551235";
+  private static final String USERNAME = "cflanalyst1";
+  private static final String PASSWORD = "Cflanalyst1";
+  private static final String ANALYST_ROLE = "Privilege Level: Analyst";
 
   @Override
   public int getVersion() {
@@ -29,25 +28,25 @@ public class DoctorUserMetadata extends AbstractUserMetadata {
   }
 
   @Override
-  protected void installEveryTime() throws Exception {
+  protected void installEveryTime() {
     // nothing to do
   }
 
   @Override
-  public void installNewVersion() throws Exception {
+  protected void installNewVersion() {
     if (isUserDoesNotExist(USERNAME)) {
-      setUpDoctorUser();
+      setUpDefaultAnalystUser();
     }
   }
 
-  private void setUpDoctorUser() {
-    Person doctor = createDoctorPerson();
-    createUserProvider(doctor, USERNAME);
+  private void setUpDefaultAnalystUser() {
+    Person analyst = createAnalystPerson();
+    createUserProvider(analyst, USERNAME);
 
-    userService.createUser(createUserObject(doctor, USERNAME, DOCTOR_ROLE), PASSWORD);
+    userService.createUser(createUserObject(analyst, USERNAME, ANALYST_ROLE), PASSWORD);
   }
 
-  private Person createDoctorPerson() {
+  private Person createAnalystPerson() {
     Person doctor = new Person();
     doctor.setGender(OTHER_GENDER);
     doctor.setNames(createUserNames(doctor, GIVEN_NAME, FAMILY_NAME));

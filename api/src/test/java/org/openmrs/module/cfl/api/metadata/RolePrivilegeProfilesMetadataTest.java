@@ -19,6 +19,7 @@ import org.openmrs.Role;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.metadatadeploy.api.MetadataDeployService;
+import org.openmrs.module.patientflags.api.FlagService;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -34,6 +35,8 @@ public class RolePrivilegeProfilesMetadataTest {
 
   @Mock private UserService userService;
 
+  @Mock private FlagService flagService;
+
   @Mock private MetadataDeployService metadataDeployService;
 
   @InjectMocks private RolePrivilegeProfilesMetadata rolePrivilegeProfilesMetadata;
@@ -42,6 +45,7 @@ public class RolePrivilegeProfilesMetadataTest {
   public void setUp() {
     mockStatic(Context.class);
     when(Context.getUserService()).thenReturn(userService);
+    when(Context.getService(FlagService.class)).thenReturn(flagService);
   }
 
   @Test

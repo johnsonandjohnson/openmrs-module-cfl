@@ -10,14 +10,14 @@
 
 package org.openmrs.module.cfl.api.metadata;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.Role;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleFactory;
 import org.openmrs.module.cfl.CfldistributionConstants;
 import org.openmrs.module.metadatadeploy.bundle.VersionedMetadataBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.HashSet;
@@ -34,11 +34,11 @@ import static org.openmrs.module.metadatadeploy.bundle.CoreConstructors.role;
  */
 public class RolePrivilegeProfilesMetadata extends VersionedMetadataBundle {
 
-  private static final String ANALYST_PRIVILEGE_LEVEL = "Privilege Level: Analyst";
+  private static final String ANALYST_ROLE_NAME = "Privilege Level: Analyst";
   private static final String ANALYST_PRIVILEGE_LEVEL_DESCRIPTION =
       "Permissions related to manging report resources.";
 
-  public static final String DOCTOR_PRIVILEGE_LEVEL = "Privilege Level: Doctor";
+  public static final String DOCTOR_ROLE_NAME = "Privilege Level: Doctor";
   private static final String DOCTOR_PRIVILEGE_LEVEL_DESCRIPTION =
       "Permissions related to manging medical resources.";
 
@@ -51,6 +51,8 @@ public class RolePrivilegeProfilesMetadata extends VersionedMetadataBundle {
   private static final String VIEW_REPORT_OBJECTS = "View Report Objects";
   private static final String VIEW_REPORTS = "View Reports";
 
+  private static final String VIEW_CHARTS = "View Charts";
+
   private static final Set<String> ANALYST_PRIVILEGES =
       idSet(
           GET_USERS,
@@ -60,10 +62,13 @@ public class RolePrivilegeProfilesMetadata extends VersionedMetadataBundle {
           MANAGE_SCHEDULED_REPORT_TASKS,
           RUN_REPORTS,
           VIEW_REPORT_OBJECTS,
-          VIEW_REPORTS);
+          VIEW_REPORTS,
+          VIEW_CHARTS,
+          "App: reportingui.reports");
 
   private static final Set<String> DOCTOR_PRIVILEGES =
-      idSet("Add Allergies",
+      idSet(
+          "Add Allergies",
           "Add Cohorts",
           "Add Concept Proposals",
           "Add Encounters",
@@ -316,16 +321,18 @@ public class RolePrivilegeProfilesMetadata extends VersionedMetadataBundle {
           VIEW_REPORTS,
           "View RESTWS",
           "View Token Registrations",
-          "View Unpublished Forms");
+          "View Unpublished Forms",
+          VIEW_CHARTS,
+          "View Flag Overview");
 
   /** Additional Doctor privileges when ETL Lite is stared. */
   private static final Set<String> DOCTOR_PRIVILEGES_ETL_OPTIONAL = idSet("ETL Mappings Privilege");
 
-  private Log log = LogFactory.getLog(RolePrivilegeProfilesMetadata.class);
+  private final Logger LOGGER = LoggerFactory.getLogger(RolePrivilegeProfilesMetadata.class);
 
   @Override
   public int getVersion() {
-    return 1;
+    return 2;
   }
 
   @Override
@@ -340,8 +347,9 @@ public class RolePrivilegeProfilesMetadata extends VersionedMetadataBundle {
   }
 
   private void installAnalystRole() {
-    Role role = role(
-            ANALYST_PRIVILEGE_LEVEL,
+    Role role =
+        role(
+            ANALYST_ROLE_NAME,
             ANALYST_PRIVILEGE_LEVEL_DESCRIPTION,
             idSet(),
             filterOutAndLogMissingPrivileges(ANALYST_PRIVILEGES));
@@ -349,12 +357,13 @@ public class RolePrivilegeProfilesMetadata extends VersionedMetadataBundle {
   }
 
   private void installDoctorRole() {
-    install(
+    Role role =
         role(
-            DOCTOR_PRIVILEGE_LEVEL,
+            DOCTOR_ROLE_NAME,
             DOCTOR_PRIVILEGE_LEVEL_DESCRIPTION,
             idSet(),
-            filterOutAndLogMissingPrivileges(appendOptionalPrivilegeIds(DOCTOR_PRIVILEGES))));
+            filterOutAndLogMissingPrivileges(appendOptionalPrivilegeIds(DOCTOR_PRIVILEGES)));
+    install(role);
   }
 
   private Set<String> appendOptionalPrivilegeIds(final Set<String> basePrivileges) {
@@ -379,7 +388,7 @@ public class RolePrivilegeProfilesMetadata extends VersionedMetadataBundle {
       if (userService.getPrivilege(privilegeName) != null) {
         result.add(privilegeName);
       } else {
-        log.warn(
+        LOGGER.warn(
             MessageFormat.format("Missing Privilege: {0}. System may be unstable.", privilegeName));
       }
     }

@@ -83,12 +83,6 @@
             <importMode>MIRROR</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
-            <filenameBase>21_OpenMRS_Base_Config_App</filenameBase>
-            <groupUuid>bd5f04fa-ab77-4b72-a004-7c3ba0abb464</groupUuid>
-            <version>3</version>
-            <importMode>MIRROR</importMode>
-        </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
-        <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>22_OpenMRS_Base_PersonAttributeTypes</filenameBase>
             <groupUuid>f591df2a-0e38-467f-bcfe-ee945eca76ca</groupUuid>
             <version>1</version>
