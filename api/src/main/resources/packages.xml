@@ -23,12 +23,6 @@
             <importMode>MIRROR</importMode>
         </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
         <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
-            <filenameBase>09_Visits_Apps</filenameBase>
-            <groupUuid>761ba249-42f0-4a9c-ab9d-5b0c42cb6fc1</groupUuid>
-            <version>4</version>
-            <importMode>MIRROR</importMode>
-        </org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
-        <org.openmrs.module.emrapi.metadata.MetadataPackageConfig>
             <filenameBase>10_SMS_Apps</filenameBase>
             <groupUuid>f4aa3110-a4f4-4b46-9745-e42dd19acb0f</groupUuid>
             <version>1</version>
