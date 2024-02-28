@@ -64,7 +64,8 @@ public class RolePrivilegeProfilesMetadata extends VersionedMetadataBundle {
           VIEW_REPORT_OBJECTS,
           VIEW_REPORTS,
           VIEW_CHARTS,
-          "App: reportingui.reports");
+          "App: reportingui.reports",
+          "Get Providers");
 
   private static final Set<String> DOCTOR_PRIVILEGES =
       idSet(
