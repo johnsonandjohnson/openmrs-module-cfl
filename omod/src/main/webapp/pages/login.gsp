@@ -184,19 +184,19 @@
 
                                     <% if (showSessionLocations) { %>
                                     <p class="clear">
-                                        <label for="sessionLocation">
-                                            <% if (!selectLocation) { %>${
-                                                    ui.message("cfl.login.sessionLocation")}: <% } %><span
-                                                class="location-error" id="sessionLocationError" style="display: none">${
-                                                    ui.message("cfl.login.error.locationRequired")}</span>
-                                        </label>
-                                    <ul id="sessionLocation" class="select">
-                                        <% locations.sort { ui.format(it) }.each { %>
-                                        <li id="${ui.encodeHtml(it.name)}" tabindex="0"
-                                            value="${it.id}">${ui.encodeHtmlContent(ui.format(it))}</li>
-                                        <% } %>
-                                    </ul>
-                                </p>
+                                      <label for="sessionLocation">
+                                          <% if (!selectLocation) { %>${
+                                                  ui.message("cfl.login.sessionLocation")}: <% } %><span
+                                              class="location-error" id="sessionLocationError" style="display: none">${
+                                                  ui.message("cfl.login.error.locationRequired")}</span>
+                                      </label>
+                                      <ul id="sessionLocation" class="select">
+                                          <% locations.sort { ui.format(it) }.each { %>
+                                          <li id="${ui.encodeHtml(it.name)}" tabindex="0"
+                                              value="${it.id}">${ui.encodeHtmlContent(ui.format(it))}</li>
+                                          <% } %>
+                                      </ul>
+                                    </p>
 
                                     <input type="hidden" id="sessionLocationInput" name="sessionLocation"
                                         <% if (lastSessionLocation != null) { %> value="${lastSessionLocation.id}" <% } %>/>
@@ -222,9 +222,11 @@
                                     </p>
                                     <% } %>
                                 </div>
+                                <div id="sample-data-title">
+                                  <span>${ui.message("cfl.loginPage.sampleDataTitle")}</span>
+                                </div>
                             </fieldset>
                             <input type="hidden" name="redirectUrl" value="${ui.encodeHtmlAttribute(redirectUrl)}"/>
-
                         </form>
                     </div>
                 </div>

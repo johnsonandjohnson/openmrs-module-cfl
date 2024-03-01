@@ -119,3 +119,11 @@ form#login-form input.form-control-lg.credential-input {
 p {
     font-family: CircularStd-Book !important;
 }
+
+#sample-data-title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: red;
+    margin-top: 10px;
+}
