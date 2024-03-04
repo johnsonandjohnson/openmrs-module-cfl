@@ -120,7 +120,7 @@ header .logo {
     margin: 5px 0;
 }
 
-header .logo a {
+header .logo img {
     height: 30px !important;
     width: auto !important;
 }

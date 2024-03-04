@@ -131,7 +131,7 @@
                 <% if (!isStagingEnvironment) { %>
                     <a href="${ui.pageLink("cfl", "home")}">
                         <div>
-                            <img src="${ui.resourceLink("cfl", "images/logo/connect_for_life.png")}"/>
+                            <img src="${ui.resourceLink("cfl", "images/logo/leprosy_brazil.jpg")}"/>
                         </div>
                     </a>
                 <% } %>
