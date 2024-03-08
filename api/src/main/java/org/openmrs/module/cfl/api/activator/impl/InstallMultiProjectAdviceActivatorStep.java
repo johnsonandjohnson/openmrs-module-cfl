@@ -24,6 +24,7 @@ import org.openmrs.module.cflcore.api.program.PatientProgramDetails;
 import org.openmrs.module.cflcore.api.service.CustomAdministrationService;
 import org.openmrs.module.cflcore.api.service.FlagDTOService;
 import org.openmrs.module.cflcore.api.service.PatientProgramDetailsService;
+import org.openmrs.module.cflcore.api.util.GlobalPropertiesConstants;
 import org.openmrs.module.messages.api.model.PatientTemplate;
 import org.openmrs.module.messages.api.model.Template;
 import org.openmrs.module.messages.api.service.DefaultPatientTemplateService;
@@ -64,11 +65,11 @@ public class InstallMultiProjectAdviceActivatorStep implements ModuleActivatorSt
   private static final List<String>
       GLOBAL_PROPERTIES_SUPPORTING_MULTI_PROJECT_WITHOUT_USER_CONTEXT =
           Arrays.asList(
-              "visits.shouldCreateFirstVisit",
-              "visits.shouldCreateFutureVisit",
-              "messages.shouldSendReminderViaSms",
-              "messages.shouldSendReminderViaCall",
-              "messages.shouldSendReminderViaWhatsApp");
+              GlobalPropertiesConstants.SHOULD_CREATE_FIRST_VISIT_GP_KEY,
+              GlobalPropertiesConstants.SHOULD_CREATE_FUTURE_VISITS_GP_KEY,
+              GlobalPropertiesConstants.SHOULD_SEND_REMINDER_VIA_SMS_GP_KEY,
+              GlobalPropertiesConstants.SHOULD_SEND_REMINDER_VIA_CALL_GP_KEY,
+              GlobalPropertiesConstants.SHOULD_SEND_REMINDER_VIA_WHATSAPP_GP_KEY);
 
   @Override
   public int getOrder() {
