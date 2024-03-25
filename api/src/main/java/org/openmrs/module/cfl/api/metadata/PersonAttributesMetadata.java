@@ -22,7 +22,7 @@ public class PersonAttributesMetadata extends VersionedMetadataBundle {
 
   @Override
   public int getVersion() {
-    return 1;
+    return 2;
   }
 
   @Override
@@ -74,10 +74,34 @@ public class PersonAttributesMetadata extends VersionedMetadataBundle {
             "af032e9f-721e-4d2d-833a-5fc452e79e05"));
     install(
         newPersonAttributeType(
-            "Sector", PERSON_ATTRIBUTE_TYPE_DESCRIPTION, "83208670-f43c-476f-a519-10a131d03c2d"));
+            "Sector",
+            PERSON_ATTRIBUTE_TYPE_DESCRIPTION,
+            "83208670-f43c-476f-a519-10a131d03c2d"));
     install(
         newPersonAttributeType(
-            "Job", PERSON_ATTRIBUTE_TYPE_DESCRIPTION, "8dc7d8a5-3061-4894-8651-a7d35da3a8aa"));
+            "Job",
+            PERSON_ATTRIBUTE_TYPE_DESCRIPTION,
+            "8dc7d8a5-3061-4894-8651-a7d35da3a8aa"));
+    install(
+        newPersonAttributeType(
+            "Vaccination program",
+            "Attribute used to store information about patient vaccination program",
+            "1b903587-2843-4914-85db-a6a6a8ecfb5b"));
+    install(
+        newPersonAttributeType(
+            "Telephone Number",
+            "The telephone number for the person",
+            "14d4f066-15f5-102d-96e4-000c29c2a5d7"));
+    install(
+        newPersonAttributeType(
+            "Patient consent",
+            "Attribute used to store information about patient consent",
+            "b1df2b2e-1d55-4845-846d-6b34a0fad9f4"));
+    install(
+        newPersonAttributeType(
+            "Unknown patient",
+            "Used to flag patients that cannot be identified during the check-in process",
+            "8b56eac7-5c76-4b9c-8c6f-1deab8d3fc47"));
   }
 
   private PersonAttributeType newPersonAttributeType(String name, String description, String uuid) {
