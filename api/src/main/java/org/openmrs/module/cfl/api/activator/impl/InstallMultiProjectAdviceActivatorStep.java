@@ -25,9 +25,11 @@ import org.openmrs.module.cflcore.api.service.CustomAdministrationService;
 import org.openmrs.module.cflcore.api.service.FlagDTOService;
 import org.openmrs.module.cflcore.api.service.PatientProgramDetailsService;
 import org.openmrs.module.cflcore.api.util.GlobalPropertiesConstants;
+import org.openmrs.module.messages.api.constants.ConfigConstants;
 import org.openmrs.module.messages.api.model.PatientTemplate;
 import org.openmrs.module.messages.api.model.Template;
 import org.openmrs.module.messages.api.service.DefaultPatientTemplateService;
+import org.openmrs.module.messages.api.service.MessagesAdministrationService;
 import org.openmrs.module.messages.api.service.PatientTemplateService;
 import org.openmrs.module.messages.api.service.TemplateService;
 import org.openmrs.module.messages.domain.PagingInfo;
@@ -69,7 +71,8 @@ public class InstallMultiProjectAdviceActivatorStep implements ModuleActivatorSt
               GlobalPropertiesConstants.SHOULD_CREATE_FUTURE_VISITS_GP_KEY,
               GlobalPropertiesConstants.SHOULD_SEND_REMINDER_VIA_SMS_GP_KEY,
               GlobalPropertiesConstants.SHOULD_SEND_REMINDER_VIA_CALL_GP_KEY,
-              GlobalPropertiesConstants.SHOULD_SEND_REMINDER_VIA_WHATSAPP_GP_KEY);
+              GlobalPropertiesConstants.SHOULD_SEND_REMINDER_VIA_WHATSAPP_GP_KEY,
+              ConfigConstants.CONSENT_CONTROL_KEY);
 
   @Override
   public int getOrder() {
@@ -158,6 +161,11 @@ public class InstallMultiProjectAdviceActivatorStep implements ModuleActivatorSt
 
     Context.addAdvice(
         CustomAdministrationService.class,
+        new GlobalPropertyWithoutUserContextAdvice(
+            GLOBAL_PROPERTIES_SUPPORTING_MULTI_PROJECT_WITHOUT_USER_CONTEXT));
+
+    Context.addAdvice(
+        MessagesAdministrationService.class,
         new GlobalPropertyWithoutUserContextAdvice(
             GLOBAL_PROPERTIES_SUPPORTING_MULTI_PROJECT_WITHOUT_USER_CONTEXT));
 
