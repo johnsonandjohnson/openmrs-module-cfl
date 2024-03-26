@@ -41,9 +41,6 @@
     <bean id="cflDisableBuildInApps" class="org.openmrs.module.cfl.api.metadata.DisableBuildInAppsMetadata">
         <property name="appFrameworkService" ref="appFrameworkService"/>
     </bean>
-    <bean id="cflHtmlFormsMetadata" class="org.openmrs.module.cfl.api.metadata.HtmlFormsMetadata"/>
-    <bean id="cflEncounterTypesMetadata"
-          class="org.openmrs.module.cfl.api.metadata.EncounterTypesMetadata"/>
     <bean id="cflUpdateGlobalParametersActivatorStep"
           class="org.openmrs.module.cfl.api.metadata.UpdateGlobalParametersMetadata"/>
     <bean id="cflPersonAttributesMetadata"
@@ -60,16 +57,6 @@
           class="org.openmrs.module.cfl.api.metadata.views.DbViewsMetadata">
         <constructor-arg ref="dbSessionFactory"/>
     </bean>
-    <bean id="abstractUserMetadata" class="org.openmrs.module.cfl.api.metadata.AbstractUserMetadata" abstract="true">
-        <property name="userService" ref="userService"/>
-        <property name="personService" ref="personService"/>
-        <property name="locationService" ref="locationService"/>
-        <property name="providerService" ref="providerService"/>
-    </bean>
-    <bean id="cflDoctorUserMetadata" class="org.openmrs.module.cfl.api.metadata.DoctorUserMetadata"
-          parent="abstractUserMetadata"/>
-    <bean id="cflAnalystUserMetadata" class="org.openmrs.module.cfl.api.metadata.AnalystUserMetadata"
-          parent="abstractUserMetadata"/>
     <bean id="cflCaptchaService" class="org.openmrs.module.cfl.api.service.impl.CaptchaServiceImpl">
         <property name="reCaptchaAttemptService">
             <bean class="org.openmrs.module.cfl.api.service.impl.ReCaptchaAttemptService" />
