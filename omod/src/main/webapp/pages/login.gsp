@@ -33,69 +33,69 @@
 </script>
 
 <% if (showSessionLocations) { %>
-<script type="text/javascript">
-    jQuery(function () {
-        updateSelectedOption = function () {
-            jQuery('#sessionLocation li').removeClass('selected');
+  <script type="text/javascript">
+      jQuery(function () {
+          updateSelectedOption = function () {
+              jQuery('#sessionLocation li').removeClass('selected');
 
-            var sessionLocationVal = jQuery('#sessionLocationInput').val();
-            if (sessionLocationVal != null && sessionLocationVal != "" && sessionLocationVal != 0) {
-                jQuery('#sessionLocation li[value|=' + sessionLocationVal + ']').addClass('selected');
-            }
-        };
+              var sessionLocationVal = jQuery('#sessionLocationInput').val();
+              if (sessionLocationVal != null && sessionLocationVal != "" && sessionLocationVal != 0) {
+                  jQuery('#sessionLocation li[value|=' + sessionLocationVal + ']').addClass('selected');
+              }
+          };
 
-        updateSelectedOption();
+          updateSelectedOption();
 
-        jQuery('#sessionLocation li').click(function () {
-            jQuery('#sessionLocationInput').val(jQuery(this).attr("value"));
-            updateSelectedOption();
-        });
-        jQuery('#sessionLocation li').focus(function () {
-            jQuery('#sessionLocationInput').val(jQuery(this).attr("value"));
-            updateSelectedOption();
-        });
+          jQuery('#sessionLocation li').click(function () {
+              jQuery('#sessionLocationInput').val(jQuery(this).attr("value"));
+              updateSelectedOption();
+          });
+          jQuery('#sessionLocation li').focus(function () {
+              jQuery('#sessionLocationInput').val(jQuery(this).attr("value"));
+              updateSelectedOption();
+          });
 
-        // If <Enter> Key is pressed, submit the form
-        jQuery('#sessionLocation').keyup(function (e) {
-            var key = e.which || e.keyCode;
-            if (key === 13) {
-                jQuery('#login-form').submit();
-            }
-        });
-        var listItem = Array.from(jQuery('#sessionLocation li'));
-        for (var i in listItem) {
-            listItem[i].setAttribute('data-key', i);
-            listItem[i].addEventListener('keyup', function (event) {
-                var keyCode = event.which || event.keyCode;
-                switch (keyCode) {
-                    case 37: // move left
-                        jQuery(this).prev('#sessionLocation li').focus();
-                        break;
-                    case 39: // move right
-                        jQuery(this).next('#sessionLocation li').focus();
-                        break;
-                    case 38: // move up
-                        jQuery('#sessionLocation li[data-key=' + (Number(jQuery(document.activeElement).attr('data-key')) - 3) + ']').focus();
-                        break;
-                    case 40: //	move down
-                        jQuery('#sessionLocation li[data-key=' + (Number(jQuery(document.activeElement).attr('data-key')) + 3) + ']').focus();
-                        break;
-                    default:
-                        break;
-                }
-            });
-        }
+          // If <Enter> Key is pressed, submit the form
+          jQuery('#sessionLocation').keyup(function (e) {
+              var key = e.which || e.keyCode;
+              if (key === 13) {
+                  jQuery('#login-form').submit();
+              }
+          });
+          var listItem = Array.from(jQuery('#sessionLocation li'));
+          for (var i in listItem) {
+              listItem[i].setAttribute('data-key', i);
+              listItem[i].addEventListener('keyup', function (event) {
+                  var keyCode = event.which || event.keyCode;
+                  switch (keyCode) {
+                      case 37: // move left
+                          jQuery(this).prev('#sessionLocation li').focus();
+                          break;
+                      case 39: // move right
+                          jQuery(this).next('#sessionLocation li').focus();
+                          break;
+                      case 38: // move up
+                          jQuery('#sessionLocation li[data-key=' + (Number(jQuery(document.activeElement).attr('data-key')) - 3) + ']').focus();
+                          break;
+                      case 40: //	move down
+                          jQuery('#sessionLocation li[data-key=' + (Number(jQuery(document.activeElement).attr('data-key')) + 3) + ']').focus();
+                          break;
+                      default:
+                          break;
+                  }
+              });
+          }
 
-        jQuery('#loginButton').click(function (e) {
-            var sessionLocationVal = jQuery('#sessionLocationInput').val();
+          jQuery('#loginButton').click(function (e) {
+              var sessionLocationVal = jQuery('#sessionLocationInput').val();
 
-            if (!sessionLocationVal) {
-                jQuery('#sessionLocationError').show();
-                e.preventDefault();
-            }
-        });
-    });
-</script>
+              if (!sessionLocationVal) {
+                  jQuery('#sessionLocationError').show();
+                  e.preventDefault();
+              }
+          });
+      });
+  </script>
 <% } %>
 
 <% if (isCaptchaEnabled) { %>
@@ -186,48 +186,54 @@
                                     <% } %>
 
                                     <% if (showSessionLocations) { %>
-                                    <p class="clear">
-                                        <label for="sessionLocation">
-                                            <% if (!selectLocation) { %>${
-                                                    ui.message("cfl.login.sessionLocation")}: <% } %><span
-                                                class="location-error" id="sessionLocationError" style="display: none">${
-                                                    ui.message("cfl.login.error.locationRequired")}</span>
-                                        </label>
-                                    <ul id="sessionLocation" class="select">
-                                        <% locations.sort { ui.format(it) }.each { %>
-                                        <li id="${ui.encodeHtml(it.name)}" tabindex="0"
-                                            value="${it.id}">${ui.encodeHtmlContent(ui.format(it))}</li>
-                                        <% } %>
-                                    </ul>
-                                </p>
+                                      <div>
+                                        <ul id="sessionLocation" class="select">
+                                            <% locations.sort { ui.format(it) }.each { %>
+                                              <li id="${ui.encodeHtml(it.name)}" tabindex="0"
+                                                  value="${it.id}">${ui.encodeHtmlContent(ui.format(it))}
+                                              </li>
+                                            <% } %>
+                                        </ul>
 
-                                    <input type="hidden" id="sessionLocationInput" name="sessionLocation"
-                                        <% if (lastSessionLocation != null) { %> value="${lastSessionLocation.id}" <% } %>/>
+                                        <input type="hidden" id="sessionLocationInput" name="sessionLocation"
+                                          <% if (lastSessionLocation != null) { %> value="${lastSessionLocation.id}" <% } %>
+                                        />
 
-                                    <p></p>
+                                        <span class="location-error" id="sessionLocationError" style="display: none">
+                                          ${ui.message("cfl.login.error.locationRequired")}
+                                        </span>
+                                        <p></p>
+                                      </div>
+                                      <div></div>
+                                    <% } else { %>
+                                      <div></div>
                                     <% } %>
-                                    <p>
-                                        <% if (selectLocation) { %>
-                                        <input id="cancelButton" class="btn cancel" type="button"
-                                               onclick="javascript:window.location = '/${ contextPath }/logout'"
-                                               value="${ui.message("general.cancel")}"/>&nbsp;&nbsp;
+                                  <div id="buttonsDiv">
+                                    <% if (selectLocation) { %>
+                                      <input id="cancelButton" class="btn cancel" type="button"
+                                             onclick="javascript:window.location = '/${ contextPath }/logout'"
+                                             value="${ui.message("common.cancel")}"
+                                      />
                                     <% } %>
-                                        <input id="loginButton"
-                                               class="btn ${ui.message(selectLocation ? "confirm" : "btn-success")} login-input"
-                                               type="submit"
-                                               value="${ui.message(selectLocation ? "general.done" : "cfl.login.button")}"/>
-                                    </p>
-                                    <% if (!selectLocation) { %>
-                                    <p>
+                                    <input id="loginButton"
+                                           class="btn ${ui.message(selectLocation ? "confirm" : "btn-success")} login-input"
+                                           type="submit"
+                                           value="${ui.message("cfl.login.button")}"
+                                    />
+                                  </div>
+                                  <div></div>
+                                  <div>
+                                    <p id="cantLoginWrapper">
+                                      <% if (!selectLocation) { %>
                                         <a id="cantLogin" href="javascript:void(0)">
                                             ${ui.message("cfl.login.cannotLogin")}
                                         </a>
+                                      <% } %>
                                     </p>
-                                    <% } %>
+                                  </div>
                                 </div>
                             </fieldset>
                             <input type="hidden" name="redirectUrl" value="${ui.encodeHtmlAttribute(redirectUrl)}"/>
-
                         </form>
                     </div>
                 </div>
@@ -240,14 +246,12 @@
             <div id="cannotLoginPopup" class="dialog" style="display: none">
                 <div class="dialog-header">
                     <i class="icon-info-sign"></i>
-
                     <h3>${ui.message("cfl.login.cannotLogin")}</h3>
                 </div>
 
                 <div class="dialog-content">
                     <p class="dialog-instructions">${ui.message("cfl.login.cannotLoginInstructions")}</p>
-
-                    <button class="confirm">${ui.message("cfl.okay")}</button>
+                    <p><button class="confirm">${ui.message("common.confirm")}</button></p>
                 </div>
             </div>
         </div>
