@@ -22,7 +22,9 @@
        'cfl.emptyDashboardWidget.label',
        'coreapps.clinicianfacing.overallActions',
        'adminui.myAccount',
-       'visits.manageVisitsBreadcrumb'
+       'visits.manageVisitsBreadcrumb',
+       'common.confirm',
+       'common.cancel'
      ], () => applyCustomChanges());
   });
 
@@ -90,6 +92,17 @@
       ];
       allergies.replaceWith(...htmlToElements(htmlLines.join('\n')));
      }
+
+     const allergy = document.querySelector('#allergy');
+     if (!!allergy) {
+      const saveAllergyButton = document.querySelector('#addAllergyBtn');
+      jq(saveAllergyButton).val(emr.message('common.confirm'));
+     }
+
+    if (new URL(window.location.href).pathname.includes("/allergyui")) {
+      const cancelButton = jq('form').last().prev()[0];
+      jq(cancelButton).text(emr.message('common.cancel'));
+    }
   }
 
   function setHomeBreadCrumbOnPatientDashboard() {

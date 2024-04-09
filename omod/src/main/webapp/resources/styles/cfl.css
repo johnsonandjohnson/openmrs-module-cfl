@@ -401,10 +401,10 @@ select:disabled, .form-group div.disabled input {
 }
 
 #app .ReactTable .-pagination .-btn[disabled] {
-    background: -webkit-linear-gradient(#E3EBF2, #E3EBF2);
-    border: 1px solid #AEC2D5;
-    color: #AEC2D5;
-    opacity: inherit;
+    background: #00455c;
+    border: 1px solid #00455c;
+    color: #FFFFFF;
+    opacity: 0.65;
 }
 
 .body-wrapper h1, .body-wrapper h2, #body-wrapper h2 {
@@ -483,13 +483,9 @@ select:disabled, .form-group div.disabled input {
 }
 
 #app .confirm {
-    background: linear-gradient(180deg, rgba(161, 208, 48, 1) 35%, rgba(136, 175, 40, 1) 100%);
-    font-size: 16px;
-}
-
-#app .confirm:hover {
-    background: linear-gradient(rgba(136, 175, 40, 1), rgba(136, 175, 40, 1));
-    color: white;
+    background-image: none;
+    background-color: #00455c;
+    border-color: #00455c;
 }
 
 #app .cancel {
@@ -502,7 +498,7 @@ select:disabled, .form-group div.disabled input {
 }
 
 #app .body-wrapper .add-btn {
-    background: -webkit-linear-gradient(bottom, #10708E 15%, #00455C 97%);
+    background: #00455C;
     border-color: #00455C;
     color: white;
     font-size: 16px;
@@ -516,17 +512,9 @@ select:disabled, .form-group div.disabled input {
 }
 
 #app .sec-btn {
-    background: -webkit-linear-gradient(top, #ffffff, #e7f6fb);
-    border-color: #C6ECF9;
-    color: #2B3640;
-    font-size: 16px;
-    margin-right: 1px;
-}
-
-#app .sec-btn:hover {
-    background: -webkit-linear-gradient(#E7F6FB, #E7F6FB);
-    border-color: #C6ECF9;
-    color: #2B3640;
+    background-image: none;
+    background-color: #00455c;
+    color: #FFFFFF;
 }
 
 #app .panel-body a.button.import-templates {
@@ -539,12 +527,10 @@ select:disabled, .form-group div.disabled input {
 }
 
 #app .btn-danger {
-    background: linear-gradient(180deg, rgba(255, 102, 102, 1) 28%, rgba(255, 61, 61, 1) 100%);
-    font-size: 16px;
-}
-
-#app .btn-danger:hover {
-    background: linear-gradient(#d9534f, #d9534f);
+    background: transparent;
+    border: #000000 1px solid !important;
+    color: #00455c;
+    font-size: 14px;
 }
 
 #app .test-btn {
@@ -559,20 +545,20 @@ select:disabled, .form-group div.disabled input {
 }
 
 #app .body-wrapper .-pagination .-first, .-previous, .-next, .-last {
-    background: -webkit-linear-gradient(top, #ffffff, #e7f6fb);
     color: #2B3640;
     font-size: 16px;
 }
 
 #app .body-wrapper .-pagination button {
     background: none;
-    color: #2B3640;
+    color: #FFFFFF;
     border: 1px solid #C6ECF9;
+    border-radius: 4px;
 }
 
 #app .body-wrapper .-pagination button:hover {
     background-color: #E7F6FB;
-    color: #2B3640;
+    color: #FFFFFF;
 }
 
 .nav-button {
@@ -605,7 +591,6 @@ select:disabled, .form-group div.disabled input {
 }
 
 #best-contact-time .button-section .btn-secondary {
-    background: -webkit-linear-gradient(bottom, #10708E 15%, #00455C 97%);
     border: #00455C;
     color: white;
     font-size: 16px;

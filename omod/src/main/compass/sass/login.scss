@@ -20,8 +20,31 @@
   }
 }
 
-.location-error {
-	color: #ff6666;
-	font-size: 1.1em;
-	font-style: italic;
+#cannotLoginPopup {
+  padding-bottom: 50px;
+}
+
+#cannotLoginPopup button.confirm,
+#buttonsDiv #loginButton {
+  float: right;
+  background: #00455c;
+  border: #000000 1px solid !important;
+  color: #FFFFFF;
+  margin: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+#buttonsDiv #cancelButton {
+  float: left;
+  background: transparent;
+  border-color: #00455c;
+  color: #00455c;
+  margin: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+#cantLoginWrapper {
+  margin-top: 10px;
 }
