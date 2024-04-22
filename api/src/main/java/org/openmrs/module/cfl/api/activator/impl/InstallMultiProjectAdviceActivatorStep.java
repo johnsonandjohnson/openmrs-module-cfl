@@ -58,7 +58,8 @@ public class InstallMultiProjectAdviceActivatorStep implements ModuleActivatorSt
   private static final List<String> GLOBAL_PROPERTIES_SUPPORTING_MULTI_PROJECT_WITH_USER_CONTEXT =
       Arrays.asList(
           "visits.extraSchedulingInformationEnabled",
-          "visits.holidayWeekdays",
+          "visits.outsideDateWindowInformationEnabled",
+          "visits.visitTypesWithTimeWindow",
           "visits.upcoming-visits-limit",
           "visits.past-visits-limit",
           "visits.visit-form-uris",
