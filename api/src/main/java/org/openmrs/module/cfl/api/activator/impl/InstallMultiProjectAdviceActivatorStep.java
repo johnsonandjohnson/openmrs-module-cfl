@@ -73,7 +73,8 @@ public class InstallMultiProjectAdviceActivatorStep implements ModuleActivatorSt
               GlobalPropertiesConstants.SHOULD_SEND_REMINDER_VIA_SMS_GP_KEY,
               GlobalPropertiesConstants.SHOULD_SEND_REMINDER_VIA_CALL_GP_KEY,
               GlobalPropertiesConstants.SHOULD_SEND_REMINDER_VIA_WHATSAPP_GP_KEY,
-              ConfigConstants.CONSENT_CONTROL_KEY);
+              ConfigConstants.CONSENT_CONTROL_KEY,
+              ConfigConstants.DEFAULT_USER_TIMEZONE);
 
   @Override
   public int getOrder() {
