@@ -78,5 +78,14 @@ public final class CfldistributionGlobalParameterConstants {
       "Always display dates in HTML Forms in this (Java) date format. E.g. \"dd/MMM/yyyy\" for 31/Jan/2012.";
   public static final String DEFAULT_CFL_HTML_FORM_DATE_FORMAT = "dd/MM/yyyy";
 
+  public static final String ROLE_UUIDS_EXCLUDED_FROM_UI_KEY = "cfl.rolesExcludedFromUI";
+
+  public static final String ROLE_UUIDS_EXCLUDED_FROM_UI_DESC =
+      "Comma separated list of user role UUIDS that should be hidden in UI selects with roles";
+
+  public static final String ROLE_UUIDS_EXCLUDED_FROM_UI_DEFAULT_VALUE =
+      "774b2af3-6437-4e5a-a310-547554c7c65c,f7fd42ef-880e-40c5-972d-e4ae7c990de2,ab2160f6-0941-430c-9752-6714353fbd3c,"
+          + "f089471c-e00b-468e-96e8-46aea1b339af,8d94f280-c2cc-11de-8d13-0010c6dffd0f,922c166d-0a39-47bc-a6a3-d402134e1291";
+
   private CfldistributionGlobalParameterConstants() {}
 }
