@@ -121,7 +121,5 @@ public final class PatientDashboardAppsConstants {
 
   public static final String COREAPPS_DELETE_PATIENT_LINK_EXT = "org.openmrs.module.coreapps.deletePatient";
 
-  public static final String TRIGGER_MESSAGE_APP = "cfl.triggerMessage";
-
   private PatientDashboardAppsConstants() {}
 }
