@@ -72,7 +72,6 @@ import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.REGI
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.REQUEST_APPOINTMENT_APP;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.SCHEDULING_APPOINTMENT_APP;
 import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.STICKY_NOTE_EXT;
-import static org.openmrs.module.cfl.api.util.PatientDashboardAppsConstants.TRIGGER_MESSAGE_APP;
 
 /**
  * The bean defined in moduleApplicationContext.xml because OpenMRS performance issues with
@@ -96,8 +95,7 @@ public class ConfigurePatientDashboardAppsActivatorStep implements ModuleActivat
           COREAPPS_DATA_MANAGEMENT_APP,
           OWA_CONCEPT_DICTIONARY_APP,
           OWA_METADATA_MAPPING_APP,
-          OWA_CONCEPT_LAB_APP,
-          TRIGGER_MESSAGE_APP);
+          OWA_CONCEPT_LAB_APP);
 
   private static final List<String> CFL_ADDITIONAL_MODIFICATION_APP_IDS =
       Arrays.asList(
