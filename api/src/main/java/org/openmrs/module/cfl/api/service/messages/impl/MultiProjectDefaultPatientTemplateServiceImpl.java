@@ -18,6 +18,7 @@ import org.openmrs.module.messages.api.model.Actor;
 import org.openmrs.module.messages.api.model.PatientTemplate;
 import org.openmrs.module.messages.api.model.Template;
 import org.openmrs.module.messages.api.service.ActorService;
+import org.openmrs.module.messages.api.service.PatientTemplateService;
 import org.openmrs.module.messages.api.service.TemplateService;
 import org.openmrs.module.messages.api.service.impl.DefaultPatientTemplateServiceImpl;
 import org.openmrs.module.messages.api.util.DefaultPatientTemplateWrapper;
@@ -32,7 +33,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class MultiProjectDefaultPatientTemplateServiceImpl extends DefaultPatientTemplateServiceImpl {
+public class MultiProjectDefaultPatientTemplateServiceImpl
+    extends DefaultPatientTemplateServiceImpl {
+
   @Override
   public List<PatientTemplate> findLackingPatientTemplates(
       Patient patient, List<PatientTemplate> existing) {
@@ -45,6 +48,13 @@ public class MultiProjectDefaultPatientTemplateServiceImpl extends DefaultPatien
     return DefaultPatientTemplateWrapper.unwrapToList(diff);
   }
 
+  @Override
+  public List<PatientTemplate> generateDefaultPatientTemplates(Patient patient) {
+    List<PatientTemplate> patientTemplates =
+        getProjectBasedPatientTemplatesWithDefaultValues(patient);
+    return Context.getService(PatientTemplateService.class).saveOrUpdate(patientTemplates);
+  }
+
   private List<PatientTemplate> getProjectBasedPatientTemplatesWithDefaultValues(Patient patient) {
     List<Template> templates = getProjectBasedTemplates(patient);
     List<Actor> actors =
@@ -52,8 +62,15 @@ public class MultiProjectDefaultPatientTemplateServiceImpl extends DefaultPatien
     List<PatientTemplate> patientTemplates =
         new ArrayList<>(templates.size() + templates.size() * actors.size());
 
+    PatientTemplateService patientTemplateService =
+        Context.getService(PatientTemplateService.class);
+
     for (Template template : templates) {
-      patientTemplates.add((new PatientTemplateBuilder(template, patient)).build());
+      PatientTemplate patientTemplate =
+          patientTemplateService.getOrBuildPatientTemplate(patient, template.getName());
+      if (patientTemplate.getId() == null) {
+        patientTemplates.add((new PatientTemplateBuilder(template, patient)).build());
+      }
 
       for (Actor actor : actors) {
         patientTemplates.add((new PatientTemplateBuilder(template, actor, patient)).build());
