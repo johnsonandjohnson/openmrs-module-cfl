@@ -62,10 +62,12 @@ public class MultiProjectDefaultPatientTemplateServiceImpl
     List<PatientTemplate> patientTemplates =
         new ArrayList<>(templates.size() + templates.size() * actors.size());
 
+    PatientTemplateService patientTemplateService =
+        Context.getService(PatientTemplateService.class);
+
     for (Template template : templates) {
       PatientTemplate patientTemplate =
-          Context.getService(PatientTemplateService.class)
-              .getOrCreatePatientTemplate(patient, template.getName());
+          patientTemplateService.getOrBuildPatientTemplate(patient, template.getName());
       if (patientTemplate.getId() == null) {
         patientTemplates.add((new PatientTemplateBuilder(template, patient)).build());
       }
